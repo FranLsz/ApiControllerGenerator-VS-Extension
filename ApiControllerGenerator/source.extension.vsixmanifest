@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
+  <Metadata>
+    <Identity Id="ApiControllerGenerator.Francisco López Sánchez.6804fda9-a29b-4849-b667-f1ba56e44c7f" Version="1.0" Language="en-US" Publisher="Francisco López Sánchez" />
+    <DisplayName>API Controller Generator</DisplayName>
+    <Description xml:space="preserve">Generates WebAPI controllers from Repository or Entity Models.</Description>
+    <License>License.txt</License>
+    <Icon>acg_logo_50.png</Icon>
+    <PreviewImage>acg_logo_200.png</PreviewImage>
+    <Tags>API, Controller, Generator, Repository, Models, Entity Framework, EF, ACG</Tags>
+  </Metadata>
+  <Installation>
+    <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[14.0]" />
+  </Installation>
+  <Dependencies>
+    <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
+    <Dependency Id="Microsoft.VisualStudio.MPF.14.0" DisplayName="Visual Studio MPF 14.0" d:Source="Installed" Version="[14.0]" />
+  </Dependencies>
+  <Assets>
+    <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
+  </Assets>
+</PackageManifest>
