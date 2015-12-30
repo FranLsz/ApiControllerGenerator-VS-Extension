@@ -1,3 +1,3 @@
-# ApiControllerGenerator-VS-Extension
+# API Controller Generator (Visual Studio Extension)
 
-Generates repository pattern code from an EF6 data model.
+Generates WebAPI controllers from Repository or Entity Models.
