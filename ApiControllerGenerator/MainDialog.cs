@@ -41,18 +41,46 @@ namespace ApiControllerGenerator
 
         private void MainDialog_Load(object sender, EventArgs e)
         {
-            Solution solution;
-            GetCurrentSolution(out solution);
-            if (solution.FilePath != null)
-            {
-                Header1.Text = solution.FilePath;
-            }
-            else
-            {
-                Header1.Text = "Solution not found";
-            }
+
             MinimizeBox = false;
             MaximizeBox = false;
+        }
+
+        private void Header2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void TwitterLink_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://twitter.com/franlsz95");
+        }
+
+        private void LinkedInLink_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://es.linkedin.com/in/francisco-lópez-sánchez-326907100");
+        }
+
+        private void GitHubLink_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/FranLsz");
+        }
+
+        private void GenerateBtn_Click(object sender, EventArgs e)
+        {
+
+        }
+        private void SettingsBtn_Click(object sender, EventArgs e)
+        {
+            SettingsBtn.Visible = false;
+            // SettingsPanel.Visible = true;
+            //RepositoryTree.ExpandAll();
+        }
+
+        private void GoBackBtn_Click(object sender, EventArgs e)
+        {
+            SettingsBtn.Visible = true;
+            //SettingsPanel.Visible = false;
         }
     }
 }
