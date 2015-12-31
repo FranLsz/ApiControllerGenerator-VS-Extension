@@ -38,6 +38,9 @@
             this.GenerateBtn = new System.Windows.Forms.Button();
             this.SettingsBtn = new System.Windows.Forms.PictureBox();
             this.GoBackBtn = new System.Windows.Forms.PictureBox();
+            this.TestLabel = new System.Windows.Forms.Label();
+            this.ProjectName = new System.Windows.Forms.TextBox();
+            this.projectNameLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.Logo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.GitHubLink)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LinkedInLink)).BeginInit();
@@ -155,11 +158,42 @@
             this.GoBackBtn.TabStop = false;
             this.GoBackBtn.Click += new System.EventHandler(this.GoBackBtn_Click);
             // 
+            // TestLabel
+            // 
+            this.TestLabel.AutoSize = true;
+            this.TestLabel.Location = new System.Drawing.Point(418, 452);
+            this.TestLabel.Name = "TestLabel";
+            this.TestLabel.Size = new System.Drawing.Size(0, 13);
+            this.TestLabel.TabIndex = 17;
+            this.TestLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // ProjectName
+            // 
+            this.ProjectName.Location = new System.Drawing.Point(318, 294);
+            this.ProjectName.Name = "ProjectName";
+            this.ProjectName.Size = new System.Drawing.Size(200, 22);
+            this.ProjectName.TabIndex = 18;
+            this.ProjectName.Text = "RPGTestProject";
+            this.ProjectName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ProjectName_KeyPress);
+            this.ProjectName.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ProjectName_KeyUp);
+            // 
+            // projectNameLabel
+            // 
+            this.projectNameLabel.AutoSize = true;
+            this.projectNameLabel.Location = new System.Drawing.Point(375, 278);
+            this.projectNameLabel.Name = "projectNameLabel";
+            this.projectNameLabel.Size = new System.Drawing.Size(93, 13);
+            this.projectNameLabel.TabIndex = 19;
+            this.projectNameLabel.Text = "API project name";
+            // 
             // MainDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(824, 586);
+            this.Controls.Add(this.projectNameLabel);
+            this.Controls.Add(this.ProjectName);
+            this.Controls.Add(this.TestLabel);
             this.Controls.Add(this.SettingsBtn);
             this.Controls.Add(this.GoBackBtn);
             this.Controls.Add(this.GenerateBtn);
@@ -200,5 +234,8 @@
         private System.Windows.Forms.Button GenerateBtn;
         private System.Windows.Forms.PictureBox SettingsBtn;
         private System.Windows.Forms.PictureBox GoBackBtn;
+        private System.Windows.Forms.Label TestLabel;
+        private System.Windows.Forms.TextBox ProjectName;
+        private System.Windows.Forms.Label projectNameLabel;
     }
 }

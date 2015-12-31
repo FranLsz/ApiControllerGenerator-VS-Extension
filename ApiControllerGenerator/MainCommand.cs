@@ -94,7 +94,6 @@ namespace ApiControllerGenerator
         private void MenuItemCallback(object sender, EventArgs e)
         {
             var md = new MainDialog(this.ServiceProvider);
-            // Show the dialog. 
             var r = md.ShowDialog();
             md.Dispose();
         }

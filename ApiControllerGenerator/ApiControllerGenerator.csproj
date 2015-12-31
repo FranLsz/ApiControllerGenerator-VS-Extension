@@ -51,6 +51,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CodeSnippets.cs" />
     <Compile Include="MainCommand.cs" />
     <Compile Include="MainCommandPackage.cs" />
     <Compile Include="MainDialog.cs">
