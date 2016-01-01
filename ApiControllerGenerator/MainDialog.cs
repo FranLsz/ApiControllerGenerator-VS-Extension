@@ -62,7 +62,7 @@ namespace ApiControllerGenerator
 
         private void GitHubLink_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("https://github.com/FranLsz");
+            System.Diagnostics.Process.Start("https://github.com/FranLsz/ApiControllerGenerator-VS-Extension");
         }
 
         private async void GenerateBtn_Click(object sender, EventArgs e)
@@ -73,42 +73,32 @@ namespace ApiControllerGenerator
 
             if (solution.FilePath != null)
             {
-                var apiProjectName = "RPGTestProject";
+                var apiProjectName = ProjectName.Text;
                 var repositoryProjectName = "Repository";
                 var repositoryProject = solution.Projects.First(o => o.Name == repositoryProjectName);
                 var apiProject = solution.Projects.First(o => o.Name == apiProjectName);
                 if (repositoryProject != null && apiProject != null)
                 {
-
-                    var xmlRepDoc = new XmlDocument();
-                    var apiRepPath = Path.Combine(solution.Projects.First(o => o.Name == repositoryProjectName).FilePath.Replace(repositoryProjectName + ".csproj", ""), "App.Config");
-                    xmlRepDoc.Load(apiRepPath);
-                    var repConnectionStrings = xmlRepDoc.DocumentElement.ChildNodes.Cast<XmlElement>().First(x => x.Name == "connectionStrings");
-                    var csdata = repConnectionStrings.ChildNodes.Cast<XmlElement>().First(x => x.Name == "add");
-                    var xmlApiDoc = new XmlDocument();
-                    var apiApiPath = Path.Combine(solution.Projects.First(o => o.Name == ProjectName.Text).FilePath.Replace(ProjectName.Text + ".csproj", ""), "Web.Config");
-                    xmlApiDoc.Load(apiApiPath);
+                    string dbContext = "";
                     try
                     {
-                        var nameAttr = xmlApiDoc.CreateAttribute("name");
-                        var connectionStringAttr = xmlApiDoc.CreateAttribute("connectionString");
-                        var providerNameAttr = xmlApiDoc.CreateAttribute("name");
+                        //CONECCTION STRINGS IMPORT
+                        var xmlRepDoc = new XmlDocument();
+                        var apiRepPath = Path.Combine(solution.Projects.First(o => o.Name == repositoryProjectName).FilePath.Replace(repositoryProjectName + ".csproj", ""), "App.Config");
+                        xmlRepDoc.Load(apiRepPath);
+                        var repConnectionStrings = xmlRepDoc.DocumentElement.ChildNodes.Cast<XmlElement>().First(x => x.Name == "connectionStrings");
+                        var csdata = repConnectionStrings.ChildNodes.Cast<XmlElement>().First(x => x.Name == "add");
 
-                        nameAttr.Value = csdata.GetAttribute("name");
-                        connectionStringAttr.Value = csdata.GetAttribute("connectionString");
-                        providerNameAttr.Value = csdata.GetAttribute("providerName");
+                        var xmlApiDoc = new XmlDocument();
+                        var apiApiPath = Path.Combine(solution.Projects.First(o => o.Name == ProjectName.Text).FilePath.Replace(ProjectName.Text + ".csproj", ""), "Web.config");
+                        xmlApiDoc.Load(apiApiPath);
 
-                        var nodeCs = xmlApiDoc.CreateElement("connectionStrings");
-                        var node = xmlApiDoc.CreateElement("add");
-
-                        node.Attributes.Append(nameAttr);
-                        node.Attributes.Append(connectionStringAttr);
-                        node.Attributes.Append(providerNameAttr);
-                        nodeCs.AppendChild(node);
+                        dbContext = csdata.GetAttribute("name");
 
                         var csnode = xmlApiDoc.ImportNode(repConnectionStrings, true);
 
-                        var m = xmlApiDoc.DocumentElement.AppendChild(csnode);
+                        xmlApiDoc.DocumentElement.AppendChild(csnode);
+                        xmlApiDoc.Save(apiApiPath);
                     }
                     catch (Exception exception)
                     {
@@ -129,12 +119,13 @@ namespace ApiControllerGenerator
 
 
 
-
+                    // GET PRIMARY KEYS WITH THEIR TYPES
                     var viewModels = repositoryProject.Documents.Where(o => o.Folders.Contains("ViewModel") && o.Name != "IViewModel.cs");
 
                     if (viewModels.Any())
                     {
                         var classesNameList = new List<string>();
+                        var maxPkSize = 1;
                         foreach (var vm in viewModels)
                         {
                             GetCurrentSolution(out solution);
@@ -151,8 +142,24 @@ namespace ApiControllerGenerator
                             var i2 = methodBody.IndexOf("}", methodBody.IndexOf("}"));
                             var pks = methodBody.Substring(i1, i2 - i1).Replace(" ", "").Split(',');
 
+                            if (pks.Count() > maxPkSize)
+                                maxPkSize = pks.Count();
 
-                            var res = apiProject.AddDocument(className + "Controller", CodeSnippets.GetRepositoryController(className, pks), new[] { apiProjectName, "Controllers" });
+                            var props = data.SyntaxTree.GetRoot().DescendantNodes().OfType<PropertyDeclarationSyntax>();
+                            var primaryKeysList = new List<Tuple<string, string>>();
+                            foreach (var p in props)
+                            {
+                                var pname = p.Identifier.Text;
+                                var pline = p.GetText().ToString();
+                                var pk = pks.FirstOrDefault(o => o.Equals(pname));
+                                if (pk != null)
+                                {
+                                    var ptype = pline.Substring(pline.IndexOf("public ") + 7, pline.IndexOf(" " + pk) - pline.IndexOf("public ") - 7);
+                                    primaryKeysList.Add(new Tuple<string, string>(pname, ptype));
+                                }
+                            }
+
+                            var res = apiProject.AddDocument(className + "Controller", CodeSnippets.GetRepositoryController(className, primaryKeysList), new[] { apiProjectName, "Controllers" });
 
                             workspace.TryApplyChanges(res.Project.Solution);
 
@@ -160,7 +167,7 @@ namespace ApiControllerGenerator
                         }
                         GetCurrentSolution(out solution);
                         apiProject = solution.Projects.First(o => o.Name == apiProjectName);
-                        var newFile = apiProject.AddDocument("Bootstrapper", CodeSnippets.GetBootstrapper(classesNameList, "BLABLABLA"), new[] { apiProjectName, "App_Start" });
+                        var newFile = apiProject.AddDocument("Bootstrapper", CodeSnippets.GetBootstrapper(classesNameList, dbContext), new[] { apiProjectName, "App_Start" });
                         workspace.TryApplyChanges(newFile.Project.Solution);
 
                         GetCurrentSolution(out solution);
@@ -195,6 +202,46 @@ namespace ApiControllerGenerator
 
                         var doc = unityConfigDoc.WithSyntaxRoot(newRoot);
                         workspace.TryApplyChanges(doc.Project.Solution);
+
+
+                        GetCurrentSolution(out solution);
+                        apiProject = solution.Projects.First(o => o.Name == apiProjectName);
+
+                        var webApiConfigDoc = apiProject.Documents.First(o => o.Folders.Contains("App_Start") && o.Name == "WebApiConfig.cs");
+                        var webApitree = await webApiConfigDoc.GetSyntaxTreeAsync();
+
+                        var targetBlock2 =
+                            webApitree.GetRoot()
+                                .DescendantNodes()
+                                .OfType<BlockSyntax>()
+                                .FirstOrDefault(x => x.Statements.Any(y => y.ToString().Contains("config.MapHttpAttributeRoutes();")));
+
+                        StatementSyntax syn2 =
+                            SyntaxFactory.ParseStatement(@"
+            UnityConfig.RegisterComponents();
+            var json = config.Formatters.JsonFormatter;
+            json.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects;
+            config.Formatters.Remove(config.Formatters.XmlFormatter);
+
+");
+                        List<StatementSyntax> newSynList2 = new List<StatementSyntax> { syn2 };
+
+                        SyntaxList<StatementSyntax> blockWithNewStatements2 = targetBlock2.Statements;
+
+                        foreach (var syn in newSynList2)
+                        {
+                            blockWithNewStatements2 = blockWithNewStatements2.Insert(0, syn);
+                        }
+
+                        BlockSyntax newBlock2 = SyntaxFactory.Block(blockWithNewStatements2);
+
+                        var newRoot2 = webApitree.GetRoot().ReplaceNode(targetBlock2, newBlock2);
+
+                        var doc2 = webApiConfigDoc.WithSyntaxRoot(newRoot2);
+                        workspace.TryApplyChanges(doc2.Project.Solution);
+
+
+
 
                     }
                     else
