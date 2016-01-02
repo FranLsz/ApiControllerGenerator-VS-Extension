@@ -22,6 +22,24 @@ Developed and designed by Francisco López Sánchez.
 ";
         public static string GetRepositoryController(string className, List<Tuple<string, string>> primaryKeys)
         {
+            var argumentPkLine = "";
+            var getByIdLine = "";
+            var httpPutPkLine = "";
+            for (var i = 0; i < primaryKeys.Count; i++)
+            {
+                if (i == 0)
+                {
+                    argumentPkLine += "[FromUri]" + primaryKeys[i].Item2 + " id";
+                    getByIdLine += "id";
+                    httpPutPkLine += "id != model." + primaryKeys[i].Item1;
+                    continue;
+                }
+                argumentPkLine += ", [FromUri]" + primaryKeys[i].Item2 + " id" + (i + 1);
+                getByIdLine += ", id" + (i + 1);
+                httpPutPkLine += " || id" + (i + 1) + " != model." + primaryKeys[i].Item1;
+            }
+
+
             var code = @"" + _header + @"
 using System;
 using System.Collections.Generic;
@@ -33,7 +51,7 @@ using System.Web.Http.Description;
 using Microsoft.Practices.Unity;
 using " + RepositoryProjectName + @"." + RepositoryModelsFolderName + @";
 using " + RepositoryProjectName + @".Repository;
-using " + RepositoryProjectName + @".ViewModel;
+using " + RepositoryProjectName + @".ViewModels;
 
 namespace " + ApiProjectName + @".Controllers
 {
@@ -51,9 +69,9 @@ namespace " + ApiProjectName + @".Controllers
 
         //GET BY ID
         [ResponseType(typeof(" + className + @"ViewModel))]
-        public IHttpActionResult Get([FromUri]" + primaryKeys[0].Item2 + @" id)
+        public IHttpActionResult Get(" + argumentPkLine + @")
         {
-            var data = " + className + @"Repository.Get(id);
+            var data = " + className + @"Repository.Get(" + getByIdLine + @");
 
             if (data == null)
                 return NotFound();
@@ -76,19 +94,19 @@ namespace " + ApiProjectName + @".Controllers
 
         //PUT
         [ResponseType(typeof(" + className + @"ViewModel))]
-        public IHttpActionResult Put([FromUri]" + primaryKeys[0].Item2 + @" id, [FromBody] " + className + @"ViewModel model)
+        public IHttpActionResult Put(" + argumentPkLine + @", [FromBody] " + className + @"ViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
 
-            if (id != model." + primaryKeys[0].Item1 + @")
+            if (" + httpPutPkLine + @")
             {
                 return BadRequest();
             }
 
-            if (" + className + @"Repository.Get(id) == null)
+            if (" + className + @"Repository.Get(" + getByIdLine + @") == null)
                 return NotFound();
 
             var rows = " + className + @"Repository.Update(model);
@@ -97,9 +115,9 @@ namespace " + ApiProjectName + @".Controllers
 
         //DELETE
         [ResponseType(typeof(" + className + @"ViewModel))]
-        public IHttpActionResult Delete([FromUri]" + primaryKeys[0].Item2 + @" id)
+        public IHttpActionResult Delete(" + argumentPkLine + @")
         {
-            var model = " + className + @"Repository.Get(id);
+            var model = " + className + @"Repository.Get(" + getByIdLine + @");
 
             if (model == null)
                 return NotFound();
@@ -113,9 +131,9 @@ namespace " + ApiProjectName + @".Controllers
         }
 
         public static string GetBootstrapper(List<string> classes, string entityDbContext)
-        {
-            var types = classes.Aggregate("", (current, c) => current + $"\n            container.RegisterType<IRepository<{c}, {c}ViewModel>, EntityRepository<{c}, {c}ViewModel>>();");
-            var code = @"" + _header + @"
+{
+    var types = classes.Aggregate("", (current, c) => current + $"\n            container.RegisterType<IRepository<{c}, {c}ViewModel>, EntityRepository<{c}, {c}ViewModel>>();");
+    var code = @"" + _header + @"
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -124,7 +142,7 @@ using System.Web;
 using Microsoft.Practices.Unity;
 using " + RepositoryProjectName + @"." + RepositoryModelsFolderName + @";
 using " + RepositoryProjectName + @".Repository;
-using " + RepositoryProjectName + @".ViewModel;
+using " + RepositoryProjectName + @".ViewModels;
 
 namespace " + ApiProjectName + @"
 {
@@ -137,7 +155,7 @@ namespace " + ApiProjectName + @"
         }
     }
 }";
-            return code;
-        }
+    return code;
+}
     }
 }

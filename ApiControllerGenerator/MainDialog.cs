@@ -120,7 +120,7 @@ namespace ApiControllerGenerator
 
 
                     // GET PRIMARY KEYS WITH THEIR TYPES
-                    var viewModels = repositoryProject.Documents.Where(o => o.Folders.Contains("ViewModel") && o.Name != "IViewModel.cs");
+                    var viewModels = repositoryProject.Documents.Where(o => o.Folders.Contains("ViewModels") && o.Name != "IViewModel.cs");
 
                     if (viewModels.Any())
                     {
@@ -219,19 +219,44 @@ namespace ApiControllerGenerator
                         StatementSyntax syn2 =
                             SyntaxFactory.ParseStatement(@"
             UnityConfig.RegisterComponents();
+
             var json = config.Formatters.JsonFormatter;
             json.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects;
             config.Formatters.Remove(config.Formatters.XmlFormatter);
 
 ");
+                        var routeTemplate = "";
+                        var defaults = "";
+                        for (var i = 1; i <= maxPkSize; i++)
+                        {
+                            if (i == 1)
+                            {
+                                routeTemplate += "{id}";
+                                defaults += "id = RouteParameter.Optional";
+                                continue;
+                            }
+                            routeTemplate += "/{id" + i + "}";
+                            defaults += ", id" + i + " = RouteParameter.Optional";
+                        }
+                        StatementSyntax syn3 =
+                            SyntaxFactory.ParseStatement(@"
+            config.Routes.MapHttpRoute(
+                name: ""DefaultApi"",
+                routeTemplate: ""api/{controller}/" + routeTemplate + @""",
+                defaults: new { " + defaults + @" }
+            );
+");
                         List<StatementSyntax> newSynList2 = new List<StatementSyntax> { syn2 };
 
-                        SyntaxList<StatementSyntax> blockWithNewStatements2 = targetBlock2.Statements;
+                        var r = targetBlock2.Statements.RemoveAt(1);
+
+                        SyntaxList<StatementSyntax> blockWithNewStatements2 = r;
 
                         foreach (var syn in newSynList2)
                         {
                             blockWithNewStatements2 = blockWithNewStatements2.Insert(0, syn);
                         }
+                        blockWithNewStatements2 = blockWithNewStatements2.Insert(blockWithNewStatements2.Count, syn3);
 
                         BlockSyntax newBlock2 = SyntaxFactory.Block(blockWithNewStatements2);
 
