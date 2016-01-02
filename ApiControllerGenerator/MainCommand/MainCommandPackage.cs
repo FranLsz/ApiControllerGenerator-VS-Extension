@@ -4,19 +4,11 @@
 // </copyright>
 //------------------------------------------------------------------------------
 
-using System;
-using System.ComponentModel.Design;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 using System.Runtime.InteropServices;
-using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.Win32;
 
-namespace ApiControllerGenerator
+namespace ApiControllerGenerator.MainCommand
 {
     /// <summary>
     /// This is the class that implements the package exposed by this assembly.
@@ -66,7 +58,7 @@ namespace ApiControllerGenerator
         /// </summary>
         protected override void Initialize()
         {
-            MainCommand.Initialize(this);
+            ApiControllerGenerator.MainCommand.MainCommand.Initialize(this);
             base.Initialize();
         }
 
