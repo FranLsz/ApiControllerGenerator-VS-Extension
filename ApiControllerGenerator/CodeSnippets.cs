@@ -23,19 +23,19 @@ Developed and designed by Francisco López Sánchez.
         public static string GetRepositoryController(string className, List<Tuple<string, string>> primaryKeys)
         {
             var argumentPkLine = "";
-            var getByIdLine = "";
+            var getDeleteByIdLine = "";
             var httpPutPkLine = "";
             for (var i = 0; i < primaryKeys.Count; i++)
             {
                 if (i == 0)
                 {
                     argumentPkLine += "[FromUri]" + primaryKeys[i].Item2 + " id";
-                    getByIdLine += "id";
+                    getDeleteByIdLine += "id";
                     httpPutPkLine += "id != model." + primaryKeys[i].Item1;
                     continue;
                 }
                 argumentPkLine += ", [FromUri]" + primaryKeys[i].Item2 + " id" + (i + 1);
-                getByIdLine += ", id" + (i + 1);
+                getDeleteByIdLine += ", id" + (i + 1);
                 httpPutPkLine += " || id" + (i + 1) + " != model." + primaryKeys[i].Item1;
             }
 
@@ -71,7 +71,7 @@ namespace " + ApiProjectName + @".Controllers
         [ResponseType(typeof(" + className + @"ViewModel))]
         public IHttpActionResult Get(" + argumentPkLine + @")
         {
-            var data = " + className + @"Repository.Get(" + getByIdLine + @");
+            var data = " + className + @"Repository.Get(" + getDeleteByIdLine + @");
 
             if (data == null)
                 return NotFound();
@@ -106,7 +106,7 @@ namespace " + ApiProjectName + @".Controllers
                 return BadRequest();
             }
 
-            if (" + className + @"Repository.Get(" + getByIdLine + @") == null)
+            if (" + className + @"Repository.Get(" + getDeleteByIdLine + @") == null)
                 return NotFound();
 
             var rows = " + className + @"Repository.Update(model);
@@ -117,12 +117,12 @@ namespace " + ApiProjectName + @".Controllers
         [ResponseType(typeof(" + className + @"ViewModel))]
         public IHttpActionResult Delete(" + argumentPkLine + @")
         {
-            var model = " + className + @"Repository.Get(" + getByIdLine + @");
+            var model = " + className + @"Repository.Get(" + getDeleteByIdLine + @");
 
             if (model == null)
                 return NotFound();
 
-            var rows = " + className + @"Repository.Delete(model);
+            var rows = " + className + @"Repository.Delete(" + getDeleteByIdLine + @");
             return Ok(rows);
         }
     }
