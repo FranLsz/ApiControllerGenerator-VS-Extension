@@ -68,8 +68,7 @@
             bitmap strip containing the bitmaps and then there are the numeric ids of the elements used
             inside a button definition. An important aspect of this declaration is that the element id
             must be the actual index (1-based) of the bitmap inside the bitmap strip. -->
-      <Bitmap guid="guidImages" href="Resources\MainCommand.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough"/>
-      <Bitmap guid="guidLogo" href="Resources\img\ui\acg_btn_icon.png" usedList="logo"/>
+      <Bitmap guid="guidLogo" href="..\Resources\img\ui\acg_btn_icon.png" usedList="logo"/>
     </Bitmaps>
   </Commands>
 
@@ -81,15 +80,6 @@
     <GuidSymbol name="guidMainCommandPackageCmdSet" value="{e71e9c8e-43ef-489e-88ff-72b7c7da40c9}">
       <IDSymbol name="MyMenuGroup" value="0x1020" />
       <IDSymbol name="MainCommandId" value="0x0100" />
-    </GuidSymbol>
-
-    <GuidSymbol name="guidImages" value="{d12a6d85-8466-4957-9a30-6734727a969d}" >
-      <IDSymbol name="bmpPic1" value="1" />
-      <IDSymbol name="bmpPic2" value="2" />
-      <IDSymbol name="bmpPicSearch" value="3" />
-      <IDSymbol name="bmpPicX" value="4" />
-      <IDSymbol name="bmpPicArrows" value="5" />
-      <IDSymbol name="bmpPicStrikethrough" value="6" />
     </GuidSymbol>
 
     <GuidSymbol name="guidLogo" value="{D2A3F2CE-1CEE-4A8C-A0A3-BD076C5DEC4C}" >

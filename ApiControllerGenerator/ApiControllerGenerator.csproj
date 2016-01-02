@@ -51,13 +51,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="CodeSnippets.cs" />
-    <Compile Include="MainCommand.cs" />
-    <Compile Include="MainCommandPackage.cs" />
-    <Compile Include="MainDialog.cs">
+    <Compile Include="CodeSnippet\CodeSnippets.cs" />
+    <Compile Include="MainCommand\MainCommand.cs" />
+    <Compile Include="MainCommand\MainCommandPackage.cs" />
+    <Compile Include="MainDialog\MainDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainDialog.Designer.cs">
+    <Compile Include="MainDialog\MainDialog.Designer.cs">
       <DependentUpon>MainDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -94,9 +94,7 @@
     <Content Include="Resources\img\ui\acg_btn_icon.png" />
     <Content Include="Resources\img\ui\go_back.png" />
     <Content Include="Resources\img\ui\settings.png" />
-    <Content Include="Resources\MainCommand.png" />
-    <Content Include="Resources\MainCommandPackage.ico" />
-    <VSCTCompile Include="MainCommandPackage.vsct">
+    <VSCTCompile Include="MainCommand\MainCommandPackage.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
   </ItemGroup>
@@ -265,7 +263,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="MainDialog.resx">
+    <EmbeddedResource Include="MainDialog\MainDialog.resx">
       <DependentUpon>MainDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="VSPackage.resx">
@@ -273,6 +271,7 @@
       <ManifestResourceName>VSPackage</ManifestResourceName>
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>VSPackage.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

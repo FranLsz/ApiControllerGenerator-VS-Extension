@@ -111,7 +111,7 @@ namespace " + ApiProjectName + @".Controllers
         public IHttpActionResult Delete(" + argumentPkLine + @")
         {
             var model = " + className + @"Repository.Get(" + getDeleteByIdLine + @");
-s
+
             if (model == null)
                 return NotFound();
 

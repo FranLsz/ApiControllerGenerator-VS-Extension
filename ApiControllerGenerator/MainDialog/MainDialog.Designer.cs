@@ -1,4 +1,4 @@
-﻿namespace ApiControllerGenerator
+﻿namespace ApiControllerGenerator.MainDialog
 {
     partial class MainDialog
     {

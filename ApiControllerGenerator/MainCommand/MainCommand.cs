@@ -93,7 +93,7 @@ namespace ApiControllerGenerator
         /// <param name="e">Event args.</param>
         private void MenuItemCallback(object sender, EventArgs e)
         {
-            var md = new MainDialog(this.ServiceProvider);
+            var md = new MainDialog.MainDialog(this.ServiceProvider);
             var r = md.ShowDialog();
             md.Dispose();
         }
