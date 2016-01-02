@@ -90,7 +90,7 @@ namespace ApiControllerGenerator
                         var csdata = repConnectionStrings.ChildNodes.Cast<XmlElement>().First(x => x.Name == "add");
 
                         var xmlApiDoc = new XmlDocument();
-                        var apiApiPath = Path.Combine(solution.Projects.First(o => o.Name == ProjectName.Text).FilePath.Replace(ProjectName.Text + ".csproj", ""), "Web.config");
+                        var apiApiPath = Path.Combine(solution.Projects.First(o => o.Name == apiProjectName).FilePath.Replace(apiProjectName + ".csproj", ""), "Web.config");
                         xmlApiDoc.Load(apiApiPath);
 
                         dbContext = csdata.GetAttribute("name");
@@ -106,7 +106,7 @@ namespace ApiControllerGenerator
                     }
 
 
-                    CodeSnippets.ApiProjectName = ProjectName.Text;
+                    CodeSnippets.ApiProjectName = apiProjectName;
                     try
                     {
                         var newProject = apiProject.AddProjectReference(new ProjectReference(repositoryProject.Id));
@@ -118,14 +118,17 @@ namespace ApiControllerGenerator
                     }
 
 
-
-                    // GET PRIMARY KEYS WITH THEIR TYPES
+                    // Gets all ViewModels
                     var viewModels = repositoryProject.Documents.Where(o => o.Folders.Contains("ViewModels") && o.Name != "IViewModel.cs");
 
                     if (viewModels.Any())
                     {
+                        // saves here all classnames to create the bootstraper file with unity registerType
                         var classesNameList = new List<string>();
+                        // max number of PK from one properties
                         var maxPkSize = 1;
+
+                        //Gets the PK (name - type) of the current ViewModel and creates his controller
                         foreach (var vm in viewModels)
                         {
                             GetCurrentSolution(out solution);
@@ -159,6 +162,7 @@ namespace ApiControllerGenerator
                                 }
                             }
 
+                            // adds controller
                             var res = apiProject.AddDocument(className + "Controller", CodeSnippets.GetRepositoryController(className, primaryKeysList), new[] { apiProjectName, "Controllers" });
 
                             workspace.TryApplyChanges(res.Project.Solution);
@@ -167,12 +171,15 @@ namespace ApiControllerGenerator
                         }
                         GetCurrentSolution(out solution);
                         apiProject = solution.Projects.First(o => o.Name == apiProjectName);
+
+                        // creates Bootstrapper file
                         var newFile = apiProject.AddDocument("Bootstrapper", CodeSnippets.GetBootstrapper(classesNameList, dbContext), new[] { apiProjectName, "App_Start" });
                         workspace.TryApplyChanges(newFile.Project.Solution);
 
                         GetCurrentSolution(out solution);
                         apiProject = solution.Projects.First(o => o.Name == apiProjectName);
 
+                        // adds "Bootstrapper.InitUnity(container);" line in unity config
                         var unityConfigDoc = apiProject.Documents.First(o => o.Folders.Contains("App_Start") && o.Name == "UnityConfig.cs");
                         var tree = await unityConfigDoc.GetSyntaxTreeAsync();
 
@@ -206,7 +213,7 @@ namespace ApiControllerGenerator
 
                         GetCurrentSolution(out solution);
                         apiProject = solution.Projects.First(o => o.Name == apiProjectName);
-
+                        // adds unity init, json formatter and url mapping line in web config
                         var webApiConfigDoc = apiProject.Documents.First(o => o.Folders.Contains("App_Start") && o.Name == "WebApiConfig.cs");
                         var webApitree = await webApiConfigDoc.GetSyntaxTreeAsync();
 

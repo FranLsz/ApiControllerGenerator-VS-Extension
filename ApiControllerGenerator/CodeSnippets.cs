@@ -84,9 +84,7 @@ namespace " + ApiProjectName + @".Controllers
         public IHttpActionResult Post([FromBody] " + className + @"ViewModel model)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest();
-            }
 
             var resModel = " + className + @"Repository.Add(model);
             return Created(""DefaultApi"", resModel);
@@ -97,20 +95,15 @@ namespace " + ApiProjectName + @".Controllers
         public IHttpActionResult Put(" + argumentPkLine + @", [FromBody] " + className + @"ViewModel model)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest();
-            }
 
             if (" + httpPutPkLine + @")
-            {
                 return BadRequest();
-            }
 
             if (" + className + @"Repository.Get(" + getDeleteByIdLine + @") == null)
                 return NotFound();
 
-            var rows = " + className + @"Repository.Update(model);
-            return Ok(rows);
+            return Ok(" + className + @"Repository.Update(model));
         }
 
         //DELETE
@@ -118,12 +111,11 @@ namespace " + ApiProjectName + @".Controllers
         public IHttpActionResult Delete(" + argumentPkLine + @")
         {
             var model = " + className + @"Repository.Get(" + getDeleteByIdLine + @");
-
+s
             if (model == null)
                 return NotFound();
 
-            var rows = " + className + @"Repository.Delete(" + getDeleteByIdLine + @");
-            return Ok(rows);
+            return Ok(" + className + @"Repository.Delete(" + getDeleteByIdLine + @"));
         }
     }
 }";
