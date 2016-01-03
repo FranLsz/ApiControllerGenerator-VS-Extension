@@ -18,7 +18,9 @@ Be free to modify this file.
 Developed and designed by Francisco López Sánchez.
 */
 ";
-        public static string GetRepositoryController(string className, List<Tuple<string, string>> primaryKeys, bool cors, bool dependencies, string dbContext)
+
+        public static string GetRepositoryController(string className, List<Tuple<string, string>> primaryKeys,
+            bool cors, bool dependencies, string dbContext)
         {
 
             var dependencyConstructor = "";
@@ -35,7 +37,8 @@ Developed and designed by Francisco López Sánchez.
 
         public " + className + @"Controller()
         {
-            " + className + @"Repository = new EntityRepository<" + className + @", " + className + @"ViewModel>(new " + dbContext + @"());
+            " + className + @"Repository = new EntityRepository<" + className + @", " + className + @"ViewModel>(new " +
+                                        dbContext + @"());
         }";
             }
             var corsUsing = "";
@@ -70,6 +73,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Microsoft.Practices.Unity;" + corsUsing + @"
+using Repository.Controllers;
 using " + RepositoryProjectName + @"." + RepositoryModelsFolderName + @";
 using " + RepositoryProjectName + @".Repository;
 using " + RepositoryProjectName + @".ViewModels;
@@ -144,7 +148,10 @@ namespace " + ApiProjectName + @".Controllers
 
         public static string GetBootstrapper(List<string> classes, string entityDbContext)
         {
-            var types = classes.Aggregate("", (current, c) => current + $"\n            container.RegisterType<IRepository<{c}, {c}ViewModel>, EntityRepository<{c}, {c}ViewModel>>();");
+            var types = classes.Aggregate("",
+                (current, c) =>
+                    current +
+                    $"\n            container.RegisterType<IRepository<{c}, {c}ViewModel>, EntityRepository<{c}, {c}ViewModel>>();");
             var code = @"" + _header + @"
 using System;
 using System.Collections.Generic;
@@ -167,6 +174,21 @@ namespace " + ApiProjectName + @"
         }
     }
 }";
+            return code;
+        }
+
+        public static string GetBaseController(string controllerName)
+        {
+            var code = @"" + _header + @"
+using System.Web.Http;
+
+namespace " + RepositoryProjectName + @".Controllers
+{
+    public class " + controllerName + @" : ApiController
+    {
+    }
+}
+";
             return code;
         }
     }

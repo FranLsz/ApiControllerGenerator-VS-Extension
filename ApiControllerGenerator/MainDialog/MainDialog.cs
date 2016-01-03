@@ -333,6 +333,18 @@ namespace ApiControllerGenerator.MainDialog
                     //----------------------------------------------------------------------------------------------------------------
                     // CONTROLLERS GENERATE
                     LogBox.AppendLine(GetHour() + " - Trying to generate all controllers");
+
+                    // if BaseController is enabled
+                    if (options["BaseController"])
+                    {
+                        var controllerName = "BaseController";
+                        CodeSnippets.ControllerInheritance = controllerName;
+                        GetCurrentSolution(out solution);
+                        apiProject = solution.Projects.First(o => o.Name == apiProjectName);
+                        var res = apiProject.AddDocument(controllerName, CodeSnippets.GetBaseController(controllerName), new[] { apiProjectName, "Controllers" });
+                        workspace.TryApplyChanges(res.Project.Solution);
+                    }
+
                     foreach (var vm in viewModels)
                     {
                         GetCurrentSolution(out solution);
