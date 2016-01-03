@@ -76,16 +76,18 @@ namespace ApiControllerGenerator.MainDialog
         // ACG GENERATE PROCESS
         private async Task<bool> AcgGenerateProcess(string apiProjectName, string repositoryProjectName, Dictionary<string, bool> options)
         {
+            var bootstrapper = true;
             var sameProjects = repositoryProjectName == apiProjectName;
 
             LogBox.AppendLine("---ACG process start---");
-
+            //----------------------------------------------------------------------------------------------------------------
             // WORKSPACE GETTING
             LogBox.AppendLine(GetHour() + " - Trying to get workspace");
             var workspace = GetWorkspace();
             LogBox.AppendLine(GetHour() + " - Workspace loaded", Color.Green);
             ProgressBar.Value = 5;
 
+            //----------------------------------------------------------------------------------------------------------------
             // SOLUTION GETTING
             LogBox.AppendLine(GetHour() + " - Trying to get solution");
             Solution solution;
@@ -93,6 +95,7 @@ namespace ApiControllerGenerator.MainDialog
             LogBox.AppendLine(GetHour() + " - Current solution loaded", Color.Green);
             ProgressBar.Value = 10;
 
+            //----------------------------------------------------------------------------------------------------------------
             // API AND REPOSITORY PROJECT GETTING
             LogBox.AppendLine(GetHour() + " - Trying to get API project named '" + apiProjectName + "'");
             var apiProject = solution.Projects.First(o => o.Name == apiProjectName);
@@ -119,6 +122,7 @@ namespace ApiControllerGenerator.MainDialog
             }
             ProgressBar.Value = 15;
 
+            //----------------------------------------------------------------------------------------------------------------
             // CHECK REFERENCES INTEGRITY
             LogBox.AppendLine(GetHour() + " - Checking references integrity of '" + apiProjectName + "'");
             var allReferences = apiProject.MetadataReferences;
@@ -186,10 +190,13 @@ namespace ApiControllerGenerator.MainDialog
             }
 
 
+            //----------------------------------------------------------------------------------------------------------------
             // START TO GENERATE
             if (repositoryProject != null && apiProject != null && allRequiredRefsOk)
             {
                 string dbContext = "";
+
+                //----------------------------------------------------------------------------------------------------------------
                 //CONNECTION STRINGS IMPORT
                 try
                 {
@@ -282,10 +289,11 @@ namespace ApiControllerGenerator.MainDialog
                 CodeSnippets.ApiProjectName = apiProjectName;
                 CodeSnippets.RepositoryProjectName = repositoryProjectName;
 
+                //----------------------------------------------------------------------------------------------------------------
                 // ADD REPOSITORY PROJECT REFERENCE
                 if (!sameProjects)
                 {
-                    LogBox.AppendLine(GetHour() + " - Trying to reference '" + repositoryProjectName + "' in '" + apiProjectName + "'");
+                    LogBox.AppendLine(GetHour() + " - Trying to reference '" + repositoryProjectName + "' on '" + apiProjectName + "'");
 
                     var alreadyReference = apiProject.ProjectReferences.Any(o => o.ProjectId == repositoryProject.Id);
 
@@ -306,23 +314,27 @@ namespace ApiControllerGenerator.MainDialog
                     }
                 }
 
-                // CONTROLLERS GENERATE
-                // get all view models
+                //----------------------------------------------------------------------------------------------------------------
+                // GET REPOSITORY VIEWMODELS
                 var viewModels = repositoryProject.Documents.Where(o => o.Folders.Contains("ViewModels") && o.Name != "IViewModel.cs");
-
+                LogBox.AppendLine(GetHour() + " - Trying to get all ViewModels");
                 if (viewModels.Any())
                 {
+                    LogBox.AppendLine(GetHour() + " - ViewModels loaded", Color.Green);
                     // save here all classnames to create the bootstraper file with unity registerType
                     var classesNameList = new List<string>();
+
                     // max number of PK from one properties
                     var maxPkSize = 1;
 
                     //Get the PK (name - type) of the current ViewModel and creates his controller
-                    ProgressBar.Value = 40;
+                    ProgressBar.Value = 50;
 
+                    //----------------------------------------------------------------------------------------------------------------
+                    // CONTROLLERS GENERATE
+                    LogBox.AppendLine(GetHour() + " - Trying to generate all controllers");
                     foreach (var vm in viewModels)
                     {
-                        LogBox.AppendLine(GetHour() + " - Workspace loaded", Color.Green);
                         GetCurrentSolution(out solution);
                         apiProject = solution.Projects.First(o => o.Name == apiProjectName);
 
@@ -345,7 +357,6 @@ namespace ApiControllerGenerator.MainDialog
                         ProgressBar.Value = 50;
                         foreach (var p in props)
                         {
-                            LogBox.AppendLine(GetHour() + " - Workspace loaded", Color.Green);
                             var pname = p.Identifier.Text;
                             var pline = p.GetText().ToString();
                             var pk = pks.FirstOrDefault(o => o.Equals(pname));
@@ -356,60 +367,76 @@ namespace ApiControllerGenerator.MainDialog
                             }
                         }
 
-                        // adds controller
-                        var res = apiProject.AddDocument(className + "Controller", CodeSnippets.GetRepositoryController(className, primaryKeysList), new[] { apiProjectName, "Controllers" });
+                        // add controller
+                        var res = apiProject.AddDocument(className + "Controller", CodeSnippets.GetRepositoryController(className, primaryKeysList, options["CORS"], options["Unity"], dbContext), new[] { apiProjectName, "Controllers" });
 
                         workspace.TryApplyChanges(res.Project.Solution);
 
                         classesNameList.Add(className);
+                        LogBox.AppendLine(GetHour() + " - " + className + "Controller generated", Color.Green);
                     }
+                    LogBox.AppendLine(GetHour() + " - All controllers generated successfully", Color.Green);
+
                     ProgressBar.Value = 60;
                     LogBox.AppendLine(GetHour() + " - Workspace loaded", Color.Green);
                     GetCurrentSolution(out solution);
                     apiProject = solution.Projects.First(o => o.Name == apiProjectName);
 
-                    // creates Bootstrapper file
-                    var newFile = apiProject.AddDocument("Bootstrapper", CodeSnippets.GetBootstrapper(classesNameList, dbContext), new[] { apiProjectName, "App_Start" });
-                    workspace.TryApplyChanges(newFile.Project.Solution);
+                    //----------------------------------------------------------------------------------------------------------------
+                    // CREATE BOOTSTRAPPER FILE
+                    if (options["Unity"] && bootstrapper)
+                    {
+                        var newFile = apiProject.AddDocument("Bootstrapper",
+                            CodeSnippets.GetBootstrapper(classesNameList, dbContext),
+                            new[] { apiProjectName, "App_Start" });
+                        workspace.TryApplyChanges(newFile.Project.Solution);
 
-                    GetCurrentSolution(out solution);
-                    apiProject = solution.Projects.First(o => o.Name == apiProjectName);
+                        GetCurrentSolution(out solution);
+                        apiProject = solution.Projects.First(o => o.Name == apiProjectName);
 
-                    // adds "Bootstrapper.InitUnity(container);" line in unity config
-                    var unityConfigDoc = apiProject.Documents.First(o => o.Folders.Contains("App_Start") && o.Name == "UnityConfig.cs");
-                    var tree = await unityConfigDoc.GetSyntaxTreeAsync();
+                        // adds "Bootstrapper.InitUnity(container);" line in unity config
+                        var unityConfigDoc =
+                            apiProject.Documents.First(
+                                o => o.Folders.Contains("App_Start") && o.Name == "UnityConfig.cs");
+                        var tree = await unityConfigDoc.GetSyntaxTreeAsync();
 
-                    var targetBlock =
-                        tree.GetRoot()
-                            .DescendantNodes()
-                            .OfType<BlockSyntax>()
-                            .FirstOrDefault(x => x.Statements.Any(y => y.ToString().Contains("var container = new UnityContainer();")));
+                        var targetBlock =
+                            tree.GetRoot()
+                                .DescendantNodes()
+                                .OfType<BlockSyntax>()
+                                .FirstOrDefault(
+                                    x =>
+                                        x.Statements.Any(
+                                            y => y.ToString().Contains("var container = new UnityContainer();")));
 
-                    StatementSyntax syn1 =
-                        SyntaxFactory.ParseStatement(@"
+                        StatementSyntax syn1 =
+                            SyntaxFactory.ParseStatement(@"
             Bootstrapper.InitUnity(container);
 
 ");
-                    List<StatementSyntax> newSynList = new List<StatementSyntax> { syn1 };
+                        List<StatementSyntax> newSynList = new List<StatementSyntax> { syn1 };
 
-                    SyntaxList<StatementSyntax> blockWithNewStatements = targetBlock.Statements;
+                        SyntaxList<StatementSyntax> blockWithNewStatements = targetBlock.Statements;
 
-                    foreach (var syn in newSynList)
-                    {
-                        blockWithNewStatements = blockWithNewStatements.Insert(1, syn);
+                        foreach (var syn in newSynList)
+                        {
+                            blockWithNewStatements = blockWithNewStatements.Insert(1, syn);
+                        }
+
+                        BlockSyntax newBlock = SyntaxFactory.Block(blockWithNewStatements);
+
+                        var newRoot = tree.GetRoot().ReplaceNode(targetBlock, newBlock);
+
+                        var doc = unityConfigDoc.WithSyntaxRoot(newRoot);
+                        workspace.TryApplyChanges(doc.Project.Solution);
+
+                        ProgressBar.Value = 70;
+                        LogBox.AppendLine(GetHour() + " - Workspace loaded", Color.Green);
+                        GetCurrentSolution(out solution);
+                        apiProject = solution.Projects.First(o => o.Name == apiProjectName);
                     }
 
-                    BlockSyntax newBlock = SyntaxFactory.Block(blockWithNewStatements);
 
-                    var newRoot = tree.GetRoot().ReplaceNode(targetBlock, newBlock);
-
-                    var doc = unityConfigDoc.WithSyntaxRoot(newRoot);
-                    workspace.TryApplyChanges(doc.Project.Solution);
-
-                    ProgressBar.Value = 70;
-                    LogBox.AppendLine(GetHour() + " - Workspace loaded", Color.Green);
-                    GetCurrentSolution(out solution);
-                    apiProject = solution.Projects.First(o => o.Name == apiProjectName);
                     // adds unity init, json formatter and url mapping line in web config
                     var webApiConfigDoc = apiProject.Documents.First(o => o.Folders.Contains("App_Start") && o.Name == "WebApiConfig.cs");
                     var webApitree = await webApiConfigDoc.GetSyntaxTreeAsync();
@@ -420,15 +447,32 @@ namespace ApiControllerGenerator.MainDialog
                             .OfType<BlockSyntax>()
                             .FirstOrDefault(x => x.Statements.Any(y => y.ToString().Contains("config.MapHttpAttributeRoutes();")));
 
-                    StatementSyntax syn2 =
-                        SyntaxFactory.ParseStatement(@"
+                    var stmt = "";
+
+                    if (options["Unity"])
+                    {
+                        stmt += @"
             UnityConfig.RegisterComponents();
+";
+                    }
+                    if (options["JSON"])
+                    {
+                        stmt += @"
 
             var json = config.Formatters.JsonFormatter;
             json.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects;
             config.Formatters.Remove(config.Formatters.XmlFormatter);
+";
+                    }
+                    if (options["CORS"])
+                    {
+                        stmt += @"
+            config.EnableCors();
 
-");
+";
+                    }
+
+                    StatementSyntax syn2 = SyntaxFactory.ParseStatement(stmt);
                     var routeTemplate = "";
                     var defaults = "";
                     for (var i = 1; i <= maxPkSize; i++)

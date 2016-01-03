@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EnvDTE;
 
 namespace ApiControllerGenerator.CodeSnippet
 {
@@ -17,8 +18,31 @@ Be free to modify this file.
 Developed and designed by Francisco López Sánchez.
 */
 ";
-        public static string GetRepositoryController(string className, List<Tuple<string, string>> primaryKeys)
+        public static string GetRepositoryController(string className, List<Tuple<string, string>> primaryKeys, bool cors, bool dependencies, string dbContext)
         {
+
+            var dependencyConstructor = "";
+            if (dependencies)
+            {
+                dependencyConstructor = @"      [Dependency]
+        public IRepository<" + className + @", " + className + @"ViewModel> " + className + @"Repository { get; set; }
+";
+            }
+            else
+            {
+                dependencyConstructor = @"
+        private IRepository<" + className + @", " + className + @"ViewModel> " + className + @"Repository;
+
+        public " + className + @"Controller()
+        {
+            " + className + @"Repository = new EntityRepository<" + className + @", " + className + @"ViewModel>(new " + dbContext + @"());
+        }";
+            }
+            var corsUsing = "";
+            if (cors)
+                corsUsing = @"
+using System.Web.Http.Cors;";
+            var corsAnnotation = @"[EnableCors(origins: "" * "", headers: "" * "", methods: "" * "")]";
             var argumentPkLine = "";
             var getDeleteByIdLine = "";
             var httpPutPkLine = "";
@@ -45,17 +69,16 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
-using Microsoft.Practices.Unity;
+using Microsoft.Practices.Unity;" + corsUsing + @"
 using " + RepositoryProjectName + @"." + RepositoryModelsFolderName + @";
 using " + RepositoryProjectName + @".Repository;
 using " + RepositoryProjectName + @".ViewModels;
 
 namespace " + ApiProjectName + @".Controllers
 {
+" + corsAnnotation + @"
     public class " + className + @"Controller : " + ControllerInheritance + @"
-    {
-        [Dependency]
-        public IRepository<" + className + @", " + className + @"ViewModel> " + className + @"Repository { get; set; }
+    {" + dependencyConstructor + @"
 
         //GET
         [ResponseType(typeof(" + className + @"ViewModel))]
@@ -120,9 +143,9 @@ namespace " + ApiProjectName + @".Controllers
         }
 
         public static string GetBootstrapper(List<string> classes, string entityDbContext)
-{
-    var types = classes.Aggregate("", (current, c) => current + $"\n            container.RegisterType<IRepository<{c}, {c}ViewModel>, EntityRepository<{c}, {c}ViewModel>>();");
-    var code = @"" + _header + @"
+        {
+            var types = classes.Aggregate("", (current, c) => current + $"\n            container.RegisterType<IRepository<{c}, {c}ViewModel>, EntityRepository<{c}, {c}ViewModel>>();");
+            var code = @"" + _header + @"
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -144,7 +167,7 @@ namespace " + ApiProjectName + @"
         }
     }
 }";
-    return code;
-}
+            return code;
+        }
     }
 }
