@@ -14,6 +14,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.LanguageServices;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 
 namespace ApiControllerGenerator.MainDialog
 {
@@ -254,7 +255,7 @@ namespace ApiControllerGenerator.MainDialog
                                     if (addElement.GetAttribute("name").Equals(dbContext))
                                         LogBox.AppendLine(
                                             GetHour() +
-                                            " - API Web.config file already contains a 'connectionStrings' element named '" +
+                                            " - API Web.Config file already contains a 'connectionStrings' element named '" +
                                             dbContext + "'", Color.Orange);
                                     else
                                     {
@@ -281,7 +282,7 @@ namespace ApiControllerGenerator.MainDialog
                 }
                 catch (Exception)
                 {
-                    LogBox.AppendLine(GetHour() + " - Problems to import connection strings from '" + repositoryProjectName + "' to '" + apiProjectName + "' , make sure that Repository project contains App.config file with connectionStrings element", Color.Red);
+                    LogBox.AppendLine(GetHour() + " - Problems to import connection strings from '" + repositoryProjectName + "' to '" + apiProjectName + "' , make sure that Repository project contains App.Config file with 'connectionStrings' element", Color.Red);
                     ProgressBar.Value = 20;
                 }
 
@@ -388,16 +389,17 @@ namespace ApiControllerGenerator.MainDialog
                         LogBox.AppendLine(GetHour() + " - " + className + "Controller generated", Color.Green);
                     }
                     LogBox.AppendLine(GetHour() + " - All controllers generated successfully", Color.Green);
-
                     ProgressBar.Value = 60;
-                    LogBox.AppendLine(GetHour() + " - Workspace loaded", Color.Green);
-                    GetCurrentSolution(out solution);
-                    apiProject = solution.Projects.First(o => o.Name == apiProjectName);
 
                     //----------------------------------------------------------------------------------------------------------------
-                    // CREATE BOOTSTRAPPER FILE
+                    // CREATE BOOTSTRAPPER FILE AND REGYSTERTYPES
                     if (options["Unity"] && bootstrapper)
                     {
+                        LogBox.AppendLine(GetHour() + " - Trying to create Bootstrapper file");
+
+                        GetCurrentSolution(out solution);
+                        apiProject = solution.Projects.First(o => o.Name == apiProjectName);
+
                         var newFile = apiProject.AddDocument("Bootstrapper",
                             CodeSnippets.GetBootstrapper(classesNameList, dbContext),
                             new[] { apiProjectName, "App_Start" });
@@ -405,7 +407,8 @@ namespace ApiControllerGenerator.MainDialog
 
                         GetCurrentSolution(out solution);
                         apiProject = solution.Projects.First(o => o.Name == apiProjectName);
-
+                        LogBox.AppendLine(GetHour() + " - Bootstraper file created", Color.Green);
+                        LogBox.AppendLine(GetHour() + " - Added all registerType statements for each entity", Color.Green);
                         // adds "Bootstrapper.InitUnity(container);" line in unity config
                         var unityConfigDoc =
                             apiProject.Documents.First(
@@ -443,13 +446,15 @@ namespace ApiControllerGenerator.MainDialog
                         workspace.TryApplyChanges(doc.Project.Solution);
 
                         ProgressBar.Value = 70;
-                        LogBox.AppendLine(GetHour() + " - Workspace loaded", Color.Green);
                         GetCurrentSolution(out solution);
                         apiProject = solution.Projects.First(o => o.Name == apiProjectName);
+                        LogBox.AppendLine(GetHour() + " - Added call to Bootstrapper in Web.Conf file", Color.Green);
                     }
 
-
+                    //WEBAPI.CONFIG FILE
                     // adds unity init, json formatter and url mapping line in web config
+                    LogBox.AppendLine(GetHour() + " - Trying to add configuration statements on WebApiConfig.cs");
+
                     var webApiConfigDoc = apiProject.Documents.First(o => o.Folders.Contains("App_Start") && o.Name == "WebApiConfig.cs");
                     var webApitree = await webApiConfigDoc.GetSyntaxTreeAsync();
 
@@ -466,22 +471,24 @@ namespace ApiControllerGenerator.MainDialog
                         stmt += @"
             UnityConfig.RegisterComponents();
 ";
+                        LogBox.AppendLine(GetHour() + " - Added component register of Unity", Color.Green);
                     }
                     if (options["JSON"])
                     {
                         stmt += @"
-
             var json = config.Formatters.JsonFormatter;
             json.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects;
             config.Formatters.Remove(config.Formatters.XmlFormatter);
 ";
+                        LogBox.AppendLine(GetHour() + " - Added JSON formatter", Color.Green);
                     }
                     if (options["CORS"])
                     {
                         stmt += @"
-            config.EnableCors();
+config.EnableCors();
 
 ";
+                        LogBox.AppendLine(GetHour() + " - Enabled CORS", Color.Green);
                     }
 
                     StatementSyntax syn2 = SyntaxFactory.ParseStatement(stmt);
@@ -525,7 +532,6 @@ namespace ApiControllerGenerator.MainDialog
                     var doc2 = webApiConfigDoc.WithSyntaxRoot(newRoot2);
                     workspace.TryApplyChanges(doc2.Project.Solution);
                     ProgressBar.Value = 100;
-                    LogBox.AppendLine(GetHour() + " - Workspace loaded", Color.Green);
                 }
                 else
                 {
