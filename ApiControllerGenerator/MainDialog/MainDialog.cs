@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using System.Xml;
 using ApiControllerGenerator.CodeSnippet;
 using ApiControllerGenerator.Utils;
+using EnvDTE;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -15,6 +16,10 @@ using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.LanguageServices;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using NuGet;
+using NuGet.VisualStudio;
+using Project = Microsoft.CodeAnalysis.Project;
+using Solution = Microsoft.CodeAnalysis.Solution;
 
 namespace ApiControllerGenerator.MainDialog
 {
@@ -122,10 +127,42 @@ namespace ApiControllerGenerator.MainDialog
                 repositoryProject = apiProject;
             }
             ProgressBar.Value = 15;
+            //----------------------------------------------------------------------------------------------------------------
+            // AUTO INSTALL NUGET PACKAGES
 
+            // get project
+            DTE dte = (DTE)this.ServiceProvider.GetService(typeof(DTE));
+            Projects dteProjects = dte.Solution.Projects;
+            EnvDTE.Project dteProject = null;
+
+            for (int i = 1; i <= dteProjects.Count; i++)
+            {
+                if (dteProjects.Item(i).Name == apiProjectName)
+                    dteProject = dteProjects.Item(i);
+            }
+
+            string packageID = "EntityFramework";
+
+            //Connect to the official package repository
+            IPackageRepository repo = PackageRepositoryFactory.Default.CreateRepository("https://packages.nuget.org/api/v2");
+
+            //PackageManager packageManager = new PackageManager(repo, path);
+            var componentModel = (IComponentModel)ServiceProvider.GetService(typeof(SComponentModel));
+            NuGet.VisualStudio.IVsPackageInstaller pckInstaller = componentModel.GetService<IVsPackageInstaller>();
+            string _onlineNugetPackageLocation = "https://packages.nuget.org/api/v2";
+            try
+            {
+                pckInstaller.InstallPackage(_onlineNugetPackageLocation, dteProject, "EntityFramework", "6.1.3", false);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
             //----------------------------------------------------------------------------------------------------------------
             // CHECK REFERENCES INTEGRITY
             LogBox.AppendLine(GetHour() + " - Checking references integrity of '" + apiProjectName + "'");
+            GetCurrentSolution(out solution);
+            apiProject = solution.Projects.First(o => o.Name == apiProjectName);
             var allReferences = apiProject.MetadataReferences;
 
             var refStatus = new Dictionary<string, bool> { { "EntityFramework", false } };
