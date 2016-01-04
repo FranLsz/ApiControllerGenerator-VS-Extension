@@ -84,6 +84,7 @@ namespace ApiControllerGenerator.MainDialog
         {
             var bootstrapper = true;
             var sameProjects = repositoryProjectName == apiProjectName;
+            string _onlineNugetPackageLocation = "https://packages.nuget.org/api/v2";
 
             LogBox.AppendLine("---ACG process start---");
             //----------------------------------------------------------------------------------------------------------------
@@ -129,7 +130,7 @@ namespace ApiControllerGenerator.MainDialog
             ProgressBar.Value = 15;
             //----------------------------------------------------------------------------------------------------------------
             // AUTO INSTALL NUGET PACKAGES
-
+            LogBox.AppendLine(GetHour() + " - Installing NuGet packages");
             // get project
             DTE dte = (DTE)this.ServiceProvider.GetService(typeof(DTE));
             Projects dteProjects = dte.Solution.Projects;
@@ -148,16 +149,44 @@ namespace ApiControllerGenerator.MainDialog
 
             //PackageManager packageManager = new PackageManager(repo, path);
             var componentModel = (IComponentModel)ServiceProvider.GetService(typeof(SComponentModel));
-            NuGet.VisualStudio.IVsPackageInstaller pckInstaller = componentModel.GetService<IVsPackageInstaller>();
-            string _onlineNugetPackageLocation = "https://packages.nuget.org/api/v2";
-            try
+            IVsPackageInstaller pckInstaller = componentModel.GetService<IVsPackageInstaller>();
+
+            var packagesToInstall = new Dictionary<string, SemanticVersion>();
+
+            var packages = new Dictionary<string, string>();
+
+            packages.Add("EntityFramework", "EntityFramework");
+
+            if (options["Unity"])
+                packages.Add("Unity", "Unity.WebApi");
+
+            if (options["CORS"])
+                packages.Add("CORS", "Microsoft.AspNet.WebApi.Cors");
+
+
+            foreach (var pkg in packages)
             {
-                pckInstaller.InstallPackage(_onlineNugetPackageLocation, dteProject, "EntityFramework", "6.1.3", false);
+                List<IPackage> package = repo.FindPackagesById(pkg.Value).ToList();
+                var lastVersion = package.Where(o => o.IsLatestVersion).Select(o => o.Version).FirstOrDefault();
+
+                packagesToInstall.Add(pkg.Value, lastVersion);
             }
-            catch (Exception e)
+
+
+            foreach (var pkg in packagesToInstall)
             {
-                Console.WriteLine(e.Message);
+                LogBox.AppendLine(GetHour() + " - Installing " + pkg.Key + " " + pkg.Value.Version);
+                try
+                {
+                    pckInstaller.InstallPackage(_onlineNugetPackageLocation, dteProject, pkg.Key, pkg.Value.Version, false);
+                    LogBox.AppendLine(GetHour() + " - " + pkg.Key + " " + pkg.Value.Version + " installed", Color.Green);
+                }
+                catch (Exception)
+                {
+                    LogBox.AppendLine(GetHour() + " - Error on installing " + pkg.Key + " " + pkg.Value.Version, Color.Red);
+                }
             }
+
             //----------------------------------------------------------------------------------------------------------------
             // CHECK REFERENCES INTEGRITY
             LogBox.AppendLine(GetHour() + " - Checking references integrity of '" + apiProjectName + "'");

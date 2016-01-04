@@ -26,9 +26,8 @@ Developed and designed by Francisco López Sánchez.
             var dependencyConstructor = "";
             if (dependencies)
             {
-                dependencyConstructor = @"      [Dependency]
-        public IRepository<" + className + @", " + className + @"ViewModel> " + className + @"Repository { get; set; }
-";
+                dependencyConstructor = @"    [Dependency]
+        public IRepository<" + className + @", " + className + @"ViewModel> " + className + @"Repository { get; set; }";
             }
             else
             {
@@ -45,7 +44,7 @@ Developed and designed by Francisco López Sánchez.
             if (cors)
                 corsUsing = @"
 using System.Web.Http.Cors;";
-            var corsAnnotation = @"[EnableCors(origins: "" * "", headers: "" * "", methods: "" * "")]";
+            var corsAnnotation = @"    [EnableCors(origins: "" * "", headers: "" * "", methods: "" * "")]";
             var argumentPkLine = "";
             var getDeleteByIdLine = "";
             var httpPutPkLine = "";
@@ -82,7 +81,8 @@ namespace " + ApiProjectName + @".Controllers
 {
 " + corsAnnotation + @"
     public class " + className + @"Controller : " + ControllerInheritance + @"
-    {" + dependencyConstructor + @"
+    {
+" + dependencyConstructor + @"
 
         //GET
         [ResponseType(typeof(" + className + @"ViewModel))]
@@ -182,7 +182,7 @@ namespace " + ApiProjectName + @"
             var code = @"" + _header + @"
 using System.Web.Http;
 
-namespace " + RepositoryProjectName + @".Controllers
+namespace " + ApiProjectName + @".Controllers
 {
     public class " + controllerName + @" : ApiController
     {
