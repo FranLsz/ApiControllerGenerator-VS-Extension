@@ -204,13 +204,19 @@ namespace ApiControllerGenerator.MainDialog
                     // only import if they are different projects
                     if (!sameProjects)
                     {
-                        LogBox.AppendLine(GetHour() + " - Trying to import connection strings from '" + repositoryProjectName + "'");
+                        LogBox.AppendLine(GetHour() + " - Trying to import connection strings from '" +
+                                          repositoryProjectName + "'");
 
                         // App.config file
                         var xmlRepDoc = new XmlDocument();
-                        var apiRepPath = Path.Combine(solution.Projects.First(o => o.Name == repositoryProjectName).FilePath.Replace(repositoryProjectName + ".csproj", ""), "App.Config");
+                        var apiRepPath =
+                            Path.Combine(
+                                solution.Projects.First(o => o.Name == repositoryProjectName)
+                                    .FilePath.Replace(repositoryProjectName + ".csproj", ""), "App.Config");
                         xmlRepDoc.Load(apiRepPath);
-                        var repConnectionStrings = xmlRepDoc.DocumentElement.ChildNodes.Cast<XmlElement>().First(x => x.Name == "connectionStrings");
+                        var repConnectionStrings =
+                            xmlRepDoc.DocumentElement.ChildNodes.Cast<XmlElement>()
+                                .First(x => x.Name == "connectionStrings");
 
                         // if App.config contains connectionStrings element
                         if (repConnectionStrings != null)
@@ -233,7 +239,8 @@ namespace ApiControllerGenerator.MainDialog
                             LogBox.AppendLine(
                                 GetHour() + " - Connection strings loaded with '" + dbContext + "' as DbContext ",
                                 Color.Green);
-                            LogBox.AppendLine(GetHour() + " - Trying to import connection strings  on '" + apiProjectName + "'");
+                            LogBox.AppendLine(GetHour() + " - Trying to import connection strings  on '" +
+                                              apiProjectName + "'");
 
                             var csnode = xmlApiDoc.ImportNode(repConnectionStrings, true);
 
@@ -275,8 +282,24 @@ namespace ApiControllerGenerator.MainDialog
                         }
                         else
                         {
-                            LogBox.AppendLine(GetHour() + " - Connection strings not found in App.config file of '" + repositoryProjectName + "' project", Color.Red);
+                            LogBox.AppendLine(
+                                GetHour() + " - Connection strings not found in App.config file of '" +
+                                repositoryProjectName + "' project", Color.Red);
                         }
+                    }
+                    else
+                    {
+                        var xmlApiDoc = new XmlDocument();
+                        var apiApiPath =
+                            Path.Combine(
+                                solution.Projects.First(o => o.Name == apiProjectName)
+                                    .FilePath.Replace(apiProjectName + ".csproj", ""), "Web.config");
+                        xmlApiDoc.Load(apiApiPath);
+                        var apiConnectionStrings =
+                            xmlApiDoc.DocumentElement.ChildNodes.Cast<XmlElement>()
+                                .FirstOrDefault(x => x.Name == "connectionStrings");
+                        var addElement = apiConnectionStrings.ChildNodes.Cast<XmlElement>().FirstOrDefault(x => x.Name == "add");
+                        dbContext = addElement.GetAttribute("name");
                     }
                     ProgressBar.Value = 20;
                 }
@@ -485,7 +508,7 @@ namespace ApiControllerGenerator.MainDialog
                     if (options["CORS"])
                     {
                         stmt += @"
-config.EnableCors();
+            config.EnableCors();
 
 ";
                         LogBox.AppendLine(GetHour() + " - Enabled CORS", Color.Green);

@@ -73,7 +73,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Microsoft.Practices.Unity;" + corsUsing + @"
-using Repository.Controllers;
+using " + ApiProjectName + @".Controllers;
 using " + RepositoryProjectName + @"." + RepositoryModelsFolderName + @";
 using " + RepositoryProjectName + @".Repository;
 using " + RepositoryProjectName + @".ViewModels;
