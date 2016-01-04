@@ -191,5 +191,70 @@ namespace " + ApiProjectName + @".Controllers
 ";
             return code;
         }
+
+        public static string GetUnityConfig(bool bootstrapper, string regysterTypes = null)
+        {
+            var bootstrapperCode = "";
+            var regysterTypesCode = "";
+            if (bootstrapper)
+                bootstrapperCode = @"
+            Bootstrapper.InitUnity(container);
+";
+            else if (regysterTypes != null)
+            {
+                regysterTypesCode = regysterTypes;
+            }
+
+            var code = @"using Microsoft.Practices.Unity;
+using System.Web.Http;
+using Unity.WebApi;
+
+namespace " + ApiProjectName + @"
+{
+    public static class UnityConfig
+    {
+        public static void RegisterComponents()
+        {
+			var container = new UnityContainer();
+" + bootstrapperCode + @"
+            // register all your components with the container here
+            // it is NOT necessary to register your controllers
+            
+            // e.g. container.RegisterType<ITestService, TestService>();
+
+" + regysterTypesCode + @"
+
+            GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
+        }
+    }
+}
+";
+            return code;
+        }
+
+        public static string GetWebApiConfig(string config, string routing)
+        {
+            var code = @"using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Http;
+
+namespace " + ApiProjectName + @"
+{
+    public static class WebApiConfig
+    {
+        public static void Register(HttpConfiguration config)
+        {
+            // Web API configuration and services
+" + config + @"
+            // Web API routes
+            config.MapHttpAttributeRoutes();
+            " + routing + @"
+        }
+    }
+}
+";
+            return code;
+        }
     }
 }
