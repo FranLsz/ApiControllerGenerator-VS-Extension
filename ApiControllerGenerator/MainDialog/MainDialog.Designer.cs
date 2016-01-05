@@ -57,6 +57,8 @@
             this.ProgressBar = new System.Windows.Forms.ProgressBar();
             this.LogBox = new System.Windows.Forms.RichTextBox();
             this.ProcessPanel = new System.Windows.Forms.Panel();
+            this.SettingsPanel = new System.Windows.Forms.Panel();
+            this.label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.GitHubLink)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LinkedInLink)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.TwitterLink)).BeginInit();
@@ -65,6 +67,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.Logo)).BeginInit();
             this.GeneratePanel.SuspendLayout();
             this.ProcessPanel.SuspendLayout();
+            this.SettingsPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // Header1
@@ -425,11 +428,30 @@
             this.ProcessPanel.TabIndex = 33;
             this.ProcessPanel.Visible = false;
             // 
+            // SettingsPanel
+            // 
+            this.SettingsPanel.Controls.Add(this.label4);
+            this.SettingsPanel.Location = new System.Drawing.Point(12, 217);
+            this.SettingsPanel.Name = "SettingsPanel";
+            this.SettingsPanel.Size = new System.Drawing.Size(800, 303);
+            this.SettingsPanel.TabIndex = 34;
+            this.SettingsPanel.Visible = false;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(367, 16);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(49, 13);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "Settings";
+            // 
             // MainDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(824, 586);
+            this.Controls.Add(this.SettingsPanel);
             this.Controls.Add(this.ProcessPanel);
             this.Controls.Add(this.GeneratePanel);
             this.Controls.Add(this.label2);
@@ -460,6 +482,8 @@
             this.GeneratePanel.ResumeLayout(false);
             this.GeneratePanel.PerformLayout();
             this.ProcessPanel.ResumeLayout(false);
+            this.SettingsPanel.ResumeLayout(false);
+            this.SettingsPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -494,5 +518,7 @@
         private System.Windows.Forms.ProgressBar ProgressBar;
         private System.Windows.Forms.RichTextBox LogBox;
         private System.Windows.Forms.Panel ProcessPanel;
+        private System.Windows.Forms.Panel SettingsPanel;
+        private System.Windows.Forms.Label label4;
     }
 }

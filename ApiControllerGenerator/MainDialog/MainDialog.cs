@@ -1351,14 +1351,14 @@ namespace ApiControllerGenerator.MainDialog
         private void SettingsBtn_Click(object sender, EventArgs e)
         {
             SettingsBtn.Visible = false;
-            // SettingsPanel.Visible = true;
+            SettingsPanel.Visible = true;
             //RepositoryTree.ExpandAll();
         }
 
         private void GoBackBtn_Click(object sender, EventArgs e)
         {
             SettingsBtn.Visible = true;
-            //SettingsPanel.Visible = false;
+            SettingsPanel.Visible = false;
         }
 
         private void GenerateFromEF_Click(object sender, EventArgs e)
