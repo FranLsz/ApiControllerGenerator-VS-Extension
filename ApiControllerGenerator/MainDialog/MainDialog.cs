@@ -105,14 +105,59 @@ namespace ApiControllerGenerator.MainDialog
             ExitBtn.Visible = true;
         }
 
+
+
+
+        // GENERATE BUTTON
+        private void GenerateBtn_Click(object sender, EventArgs e)
+        {
+            GeneratePanel.Visible = false;
+            ProcessPanel.Visible = true;
+            SettingsBtn.Visible = false;
+            GoBackBtn.Visible = false;
+
+            var apiProjectName = ApiProject.SelectedItem.ToString();
+            var repositoryProjectName = RepositoryIncluded.Checked ? apiProjectName : RepositoryProject.SelectedItem.ToString();
+
+            var options = new Dictionary<string, bool>
+             {
+                 {"BaseController", GenerateOptions_BaseController.Checked},
+                 {"Unity", GenerateOptions_Unity.Checked},
+                 {"CORS", GenerateOptions_CORS.Checked},
+                 {"JSON", GenerateOptions_JSON.Checked}
+             };
+
+            BackgroundWorker bw = new BackgroundWorker
+            {
+                WorkerSupportsCancellation = true,
+                WorkerReportsProgress = true
+            };
+            bw.DoWork += bw_DoWork;
+            bw.ProgressChanged += bw_ProgressChanged;
+            bw.RunWorkerCompleted += bw_RunWorkerCompleted;
+
+            var param = new Dictionary<string, object>
+             {
+                 {"ApiProjectName", apiProjectName},
+                 {"RepositoryProjectName", repositoryProjectName},
+                 {"Options", options}
+             };
+
+            if (bw.IsBusy != true)
+            {
+                bw.RunWorkerAsync(param);
+            }
+        }
+
         private async void bw_DoWork(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker worker = sender as BackgroundWorker;
-            if (worker.CancellationPending == true)
+            if (worker.CancellationPending)
             {
                 e.Cancel = true;
                 return;
             }
+
             // PARAMS
             var param = (Dictionary<string, object>)e.Argument;
 
@@ -125,7 +170,7 @@ namespace ApiControllerGenerator.MainDialog
             var sameProjects = repositoryProjectName == apiProjectName;
             var _onlineNugetPackageLocation = "https://packages.nuget.org/api/v2";
             //worker.ReportProgress(0, " ---ACG process start---");
-            Send(worker, 0, " ---ACG process start---");
+            Send(worker, 0, " ---ACG process started---");
             //----------------------------------------------------------------------------------------------------------------
             // WORKSPACE GETTING
             Send(worker, 0, " - Trying to get workspace");
@@ -625,6 +670,7 @@ namespace ApiControllerGenerator.MainDialog
             config.EnableCors();
  ";
                     }
+                    Send(worker, 95, " - Enabled CORS header", Color.Green);
                     var routeTemplate = "";
                     var defaults = "";
                     for (var i = 1; i <= maxPkSize; i++)
@@ -698,47 +744,7 @@ namespace ApiControllerGenerator.MainDialog
                 }
             }
 
-            Send(worker, 100, "---ACG process end---");
-        }
-
-
-        // GENERATE BUTTON
-        private void GenerateBtn_Click(object sender, EventArgs e)
-        {
-            GeneratePanel.Visible = false;
-            ProcessPanel.Visible = true;
-
-            var apiProjectName = ApiProject.SelectedItem.ToString();
-            var repositoryProjectName = RepositoryIncluded.Checked ? apiProjectName : RepositoryProject.SelectedItem.ToString();
-
-            var options = new Dictionary<string, bool>
-             {
-                 {"BaseController", GenerateOptions_BaseController.Checked},
-                 {"Unity", GenerateOptions_Unity.Checked},
-                 {"CORS", GenerateOptions_CORS.Checked},
-                 {"JSON", GenerateOptions_JSON.Checked}
-             };
-
-            BackgroundWorker bw = new BackgroundWorker
-            {
-                WorkerSupportsCancellation = true,
-                WorkerReportsProgress = true
-            };
-            bw.DoWork += bw_DoWork;
-            bw.ProgressChanged += bw_ProgressChanged;
-            bw.RunWorkerCompleted += bw_RunWorkerCompleted;
-
-            var param = new Dictionary<string, object>
-             {
-                 {"ApiProjectName", apiProjectName},
-                 {"RepositoryProjectName", repositoryProjectName},
-                 {"Options", options}
-             };
-
-            if (bw.IsBusy != true)
-            {
-                bw.RunWorkerAsync(param);
-            }
+            Send(worker, 100, "---ACG process ended---");
         }
 
         // ACG GENERATE PROCESS

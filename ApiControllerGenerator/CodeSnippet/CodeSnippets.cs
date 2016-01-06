@@ -151,7 +151,7 @@ namespace " + ApiProjectName + @".Controllers
             var types = classes.Aggregate("",
                 (current, c) =>
                     current +
-                    $"\n            container.RegisterType<IRepository<{c}, {c}ViewModel>, EntityRepository<{c}, {c}ViewModel>>();");
+                    $"\r\n            container.RegisterType<IRepository<{c}, {c}ViewModel>, EntityRepository<{c}, {c}ViewModel>>();");
             var code = @"" + _header + @"
 using System;
 using System.Collections.Generic;
