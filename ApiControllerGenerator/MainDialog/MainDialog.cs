@@ -211,18 +211,8 @@ namespace ApiControllerGenerator.MainDialog
             }
             //----------------------------------------------------------------------------------------------------------------
             // AUTO INSTALL NUGET PACKAGES
-            Send(worker, 25, " - Installing NuGet packages");
-            // get project
-            DTE dte = (DTE)this.ServiceProvider.GetService(typeof(DTE));
-            Projects dteProjects = dte.Solution.Projects;
-            EnvDTE.Project dteProject = null;
-
-            for (int i = 1; i <= dteProjects.Count; i++)
-            {
-                if (dteProjects.Item(i).Name == apiProjectName)
-                    dteProject = dteProjects.Item(i);
-            }
-
+            Send(worker, 25, " - Trying to install NuGet packages");
+            
             string packageID = "EntityFramework";
 
             //Connect to the official package repository
@@ -631,6 +621,8 @@ namespace ApiControllerGenerator.MainDialog
                     // adds unity init, json formatter and url mapping line in web config
                     Send(worker, 95, " - Trying to add configuration statements on WebApiConfig.cs");
 
+
+                    // dte.Solution.AddFromTemplate("ENVTEST", "", "ENVTEST");
                     foreach (ProjectItem pi in dteProject.ProjectItems)
                     {
                         if (pi.Name != "App_Start") continue;
