@@ -212,7 +212,18 @@ namespace ApiControllerGenerator.MainDialog
             //----------------------------------------------------------------------------------------------------------------
             // AUTO INSTALL NUGET PACKAGES
             Send(worker, 25, " - Trying to install NuGet packages");
-            
+            // get project
+            DTE dte = (DTE)this.ServiceProvider.GetService(typeof(DTE));
+            var solution2 = (Solution2)dte.Solution;
+            Projects dteProjects = dte.Solution.Projects;
+            EnvDTE.Project dteProject = null;
+
+            for (int i = 1; i <= dteProjects.Count; i++)
+            {
+                if (dteProjects.Item(i).Name == apiProjectName)
+                    dteProject = dteProjects.Item(i);
+            }
+
             string packageID = "EntityFramework";
 
             //Connect to the official package repository
