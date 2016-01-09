@@ -26,7 +26,7 @@ Developed and designed by Francisco López Sánchez.
             var dependencyConstructor = "";
             if (dependencies)
             {
-                dependencyConstructor = @"    [Dependency]
+                dependencyConstructor = @"        [Dependency]
         public IRepository<" + className + @", " + className + @"ViewModel> " + className + @"Repository { get; set; }";
             }
             else
@@ -44,7 +44,7 @@ Developed and designed by Francisco López Sánchez.
             if (cors)
                 corsUsing = @"
 using System.Web.Http.Cors;";
-            var corsAnnotation = @"    [EnableCors(origins: "" * "", headers: "" * "", methods: "" * "")]";
+            var corsAnnotation = @"    [EnableCors(origins: ""*"", headers: ""*"", methods: ""*"")]";
             var argumentPkLine = "";
             var getDeleteByIdLine = "";
             var httpPutPkLine = "";

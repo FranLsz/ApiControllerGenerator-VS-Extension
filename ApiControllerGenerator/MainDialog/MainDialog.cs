@@ -1389,5 +1389,15 @@ namespace ApiControllerGenerator.MainDialog
         {
             Close();
         }
+
+        private void NuGet_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void NuGetOther_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

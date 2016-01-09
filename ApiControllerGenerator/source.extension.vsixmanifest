@@ -7,7 +7,7 @@
     <License>License.txt</License>
     <Icon>acg_logo_50.png</Icon>
     <PreviewImage>acg_logo_200.png</PreviewImage>
-    <Tags>API, Controller, Generator, Repository, Models, Entity Framework, EF, ACG</Tags>
+    <Tags>WebAPI, API, Controller, Generator, Repository, Models, Entity Framework, EF, ACG</Tags>
   </Metadata>
   <Installation>
     <InstallationTarget Version="[14.0,15.0)" Id="Microsoft.VisualStudio.Community" />
