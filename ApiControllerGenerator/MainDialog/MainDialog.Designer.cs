@@ -58,26 +58,26 @@
             this.LogBox = new System.Windows.Forms.RichTextBox();
             this.ProcessPanel = new System.Windows.Forms.Panel();
             this.SettingsPanel = new System.Windows.Forms.Panel();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.BaseControllerTxt = new System.Windows.Forms.TextBox();
-            this.Bootstrapper = new System.Windows.Forms.CheckBox();
-            this.NuGet = new System.Windows.Forms.CheckBox();
-            this.NuGetOther = new System.Windows.Forms.CheckBox();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
             this.EntityFrameworkVersionTxt = new System.Windows.Forms.TextBox();
             this.UnityVersionTxt = new System.Windows.Forms.TextBox();
             this.CORSVersionTxt = new System.Windows.Forms.TextBox();
-            this.NuGetOtherTxt = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
+            this.NuGetOther = new System.Windows.Forms.CheckBox();
+            this.NuGet = new System.Windows.Forms.CheckBox();
+            this.Bootstrapper = new System.Windows.Forms.CheckBox();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.label5 = new System.Windows.Forms.Label();
+            this.BaseControllerTxt = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.GitHubLink)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LinkedInLink)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.TwitterLink)).BeginInit();
@@ -87,10 +87,10 @@
             this.GeneratePanel.SuspendLayout();
             this.ProcessPanel.SuspendLayout();
             this.SettingsPanel.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
-            this.panel2.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // Header1
@@ -453,7 +453,7 @@
             // 
             // SettingsPanel
             // 
-            this.SettingsPanel.Controls.Add(this.panel2);
+            this.SettingsPanel.Controls.Add(this.tableLayoutPanel3);
             this.SettingsPanel.Controls.Add(this.panel1);
             this.SettingsPanel.Controls.Add(this.NuGet);
             this.SettingsPanel.Controls.Add(this.Bootstrapper);
@@ -465,83 +465,50 @@
             this.SettingsPanel.TabIndex = 34;
             this.SettingsPanel.Visible = false;
             // 
-            // label4
+            // tableLayoutPanel3
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(367, 16);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(49, 13);
-            this.label4.TabIndex = 0;
-            this.label4.Text = "Settings";
+            this.tableLayoutPanel3.AutoScroll = true;
+            this.tableLayoutPanel3.ColumnCount = 2;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel3.Controls.Add(this.label10, 1, 0);
+            this.tableLayoutPanel3.Controls.Add(this.textBox1, 0, 1);
+            this.tableLayoutPanel3.Controls.Add(this.label9, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.textBox2, 1, 1);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(344, 62);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 2;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(418, 64);
+            this.tableLayoutPanel3.TabIndex = 0;
+            this.tableLayoutPanel3.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel3_Paint);
             // 
-            // label5
+            // textBox1
             // 
-            this.label5.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 16);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(114, 13);
-            this.label5.TabIndex = 1;
-            this.label5.Text = "BaseController name";
+            this.textBox1.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.textBox1.Location = new System.Drawing.Point(3, 16);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(298, 22);
+            this.textBox1.TabIndex = 0;
             // 
-            // tableLayoutPanel1
+            // textBox2
             // 
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.label5, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.BaseControllerTxt, 1, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(22, 62);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 1;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(316, 45);
-            this.tableLayoutPanel1.TabIndex = 2;
+            this.textBox2.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.textBox2.Location = new System.Drawing.Point(311, 16);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(100, 22);
+            this.textBox2.TabIndex = 1;
             // 
-            // BaseControllerTxt
+            // label9
             // 
-            this.BaseControllerTxt.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.BaseControllerTxt.Location = new System.Drawing.Point(140, 11);
-            this.BaseControllerTxt.Name = "BaseControllerTxt";
-            this.BaseControllerTxt.Size = new System.Drawing.Size(156, 22);
-            this.BaseControllerTxt.TabIndex = 2;
-            this.BaseControllerTxt.Text = "BaseController";
-            // 
-            // Bootstrapper
-            // 
-            this.Bootstrapper.AutoSize = true;
-            this.Bootstrapper.Checked = true;
-            this.Bootstrapper.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.Bootstrapper.Location = new System.Drawing.Point(24, 123);
-            this.Bootstrapper.Name = "Bootstrapper";
-            this.Bootstrapper.Size = new System.Drawing.Size(314, 17);
-            this.Bootstrapper.TabIndex = 3;
-            this.Bootstrapper.Text = "Generate Bootstrapper file (only if Unity IoC is activated)";
-            this.Bootstrapper.UseVisualStyleBackColor = true;
-            // 
-            // NuGet
-            // 
-            this.NuGet.AutoSize = true;
-            this.NuGet.Checked = true;
-            this.NuGet.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.NuGet.Location = new System.Drawing.Point(24, 146);
-            this.NuGet.Name = "NuGet";
-            this.NuGet.Size = new System.Drawing.Size(250, 17);
-            this.NuGet.TabIndex = 5;
-            this.NuGet.Text = "Auto install NuGet packages if not installed";
-            this.NuGet.UseVisualStyleBackColor = true;
-            this.NuGet.CheckedChanged += new System.EventHandler(this.NuGet_CheckedChanged);
-            // 
-            // NuGetOther
-            // 
-            this.NuGetOther.AutoSize = true;
-            this.NuGetOther.Location = new System.Drawing.Point(17, 106);
-            this.NuGetOther.Name = "NuGetOther";
-            this.NuGetOther.Size = new System.Drawing.Size(139, 17);
-            this.NuGetOther.TabIndex = 6;
-            this.NuGetOther.Text = "Install other packages";
-            this.NuGetOther.UseVisualStyleBackColor = true;
-            this.NuGetOther.CheckedChanged += new System.EventHandler(this.NuGetOther_CheckedChanged);
+            this.label9.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(112, 0);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(80, 13);
+            this.label9.TabIndex = 2;
+            this.label9.Text = "Package name";
             // 
             // panel1
             // 
@@ -551,36 +518,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(317, 125);
             this.panel1.TabIndex = 7;
-            // 
-            // label6
-            // 
-            this.label6.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(3, 7);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(96, 13);
-            this.label6.TabIndex = 0;
-            this.label6.Text = "Entity Framework";
-            // 
-            // label7
-            // 
-            this.label7.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(3, 35);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(77, 13);
-            this.label7.TabIndex = 1;
-            this.label7.Text = "Unity WebAPI";
-            // 
-            // label8
-            // 
-            this.label8.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(3, 64);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(178, 13);
-            this.label8.TabIndex = 7;
-            this.label8.Text = "Microsoft ASP .NET WebAPI CORS";
             // 
             // tableLayoutPanel2
             // 
@@ -601,6 +538,36 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.Size = new System.Drawing.Size(293, 86);
             this.tableLayoutPanel2.TabIndex = 7;
+            // 
+            // label6
+            // 
+            this.label6.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(3, 7);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(96, 13);
+            this.label6.TabIndex = 0;
+            this.label6.Text = "Entity Framework";
+            // 
+            // label8
+            // 
+            this.label8.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(3, 64);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(178, 13);
+            this.label8.TabIndex = 7;
+            this.label8.Text = "Microsoft ASP .NET WebAPI CORS";
+            // 
+            // label7
+            // 
+            this.label7.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(3, 35);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(77, 13);
+            this.label7.TabIndex = 1;
+            this.label7.Text = "Unity WebAPI";
             // 
             // EntityFrameworkVersionTxt
             // 
@@ -626,52 +593,93 @@
             this.CORSVersionTxt.TabIndex = 10;
             this.CORSVersionTxt.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // NuGetOtherTxt
+            // NuGetOther
             // 
-            this.NuGetOtherTxt.Location = new System.Drawing.Point(15, 73);
-            this.NuGetOtherTxt.Multiline = true;
-            this.NuGetOtherTxt.Name = "NuGetOtherTxt";
-            this.NuGetOtherTxt.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.NuGetOtherTxt.Size = new System.Drawing.Size(415, 125);
-            this.NuGetOtherTxt.TabIndex = 7;
+            this.NuGetOther.AutoSize = true;
+            this.NuGetOther.Location = new System.Drawing.Point(17, 106);
+            this.NuGetOther.Name = "NuGetOther";
+            this.NuGetOther.Size = new System.Drawing.Size(139, 17);
+            this.NuGetOther.TabIndex = 6;
+            this.NuGetOther.Text = "Install other packages";
+            this.NuGetOther.UseVisualStyleBackColor = true;
+            this.NuGetOther.CheckedChanged += new System.EventHandler(this.NuGetOther_CheckedChanged);
             // 
-            // label9
+            // NuGet
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(12, 34);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(296, 13);
-            this.label9.TabIndex = 8;
-            this.label9.Text = "WindowsAzure.Storage//6.2.0      (to get specific version)";
+            this.NuGet.AutoSize = true;
+            this.NuGet.Checked = true;
+            this.NuGet.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.NuGet.Location = new System.Drawing.Point(24, 146);
+            this.NuGet.Name = "NuGet";
+            this.NuGet.Size = new System.Drawing.Size(250, 17);
+            this.NuGet.TabIndex = 5;
+            this.NuGet.Text = "Auto install NuGet packages if not installed";
+            this.NuGet.UseVisualStyleBackColor = true;
+            this.NuGet.CheckedChanged += new System.EventHandler(this.NuGet_CheckedChanged);
+            // 
+            // Bootstrapper
+            // 
+            this.Bootstrapper.AutoSize = true;
+            this.Bootstrapper.Checked = true;
+            this.Bootstrapper.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.Bootstrapper.Location = new System.Drawing.Point(24, 123);
+            this.Bootstrapper.Name = "Bootstrapper";
+            this.Bootstrapper.Size = new System.Drawing.Size(314, 17);
+            this.Bootstrapper.TabIndex = 3;
+            this.Bootstrapper.Text = "Generate Bootstrapper file (only if Unity IoC is activated)";
+            this.Bootstrapper.UseVisualStyleBackColor = true;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.label5, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.BaseControllerTxt, 1, 0);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(22, 62);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(316, 45);
+            this.tableLayoutPanel1.TabIndex = 2;
+            // 
+            // label5
+            // 
+            this.label5.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(3, 16);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(114, 13);
+            this.label5.TabIndex = 1;
+            this.label5.Text = "BaseController name";
+            // 
+            // BaseControllerTxt
+            // 
+            this.BaseControllerTxt.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.BaseControllerTxt.Location = new System.Drawing.Point(140, 11);
+            this.BaseControllerTxt.Name = "BaseControllerTxt";
+            this.BaseControllerTxt.Size = new System.Drawing.Size(156, 22);
+            this.BaseControllerTxt.TabIndex = 2;
+            this.BaseControllerTxt.Text = "BaseController";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(367, 16);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(49, 13);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "Settings";
             // 
             // label10
             // 
+            this.label10.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(12, 6);
+            this.label10.Location = new System.Drawing.Point(316, 0);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(163, 13);
-            this.label10.TabIndex = 9;
-            this.label10.Text = "Format (one package per line):";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(12, 50);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(293, 13);
-            this.label11.TabIndex = 10;
-            this.label11.Text = "WindowsAzure.Storage      (to get latest release version)";
-            // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.label11);
-            this.panel2.Controls.Add(this.NuGetOtherTxt);
-            this.panel2.Controls.Add(this.label10);
-            this.panel2.Controls.Add(this.label9);
-            this.panel2.Location = new System.Drawing.Point(344, 62);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(443, 232);
-            this.panel2.TabIndex = 11;
+            this.label10.Size = new System.Drawing.Size(89, 13);
+            this.label10.TabIndex = 8;
+            this.label10.Text = "Package version";
             // 
             // MainDialog
             // 
@@ -711,14 +719,14 @@
             this.ProcessPanel.ResumeLayout(false);
             this.SettingsPanel.ResumeLayout(false);
             this.SettingsPanel.PerformLayout();
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel1.PerformLayout();
+            this.tableLayoutPanel3.ResumeLayout(false);
+            this.tableLayoutPanel3.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -769,10 +777,10 @@
         private System.Windows.Forms.TextBox EntityFrameworkVersionTxt;
         private System.Windows.Forms.TextBox UnityVersionTxt;
         private System.Windows.Forms.TextBox CORSVersionTxt;
-        private System.Windows.Forms.TextBox NuGetOtherTxt;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Panel panel2;
     }
 }
