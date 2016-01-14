@@ -59,6 +59,8 @@
             this.ProcessPanel = new System.Windows.Forms.Panel();
             this.SettingsPanel = new System.Windows.Forms.Panel();
             this.OtherNuGetPackagesList = new System.Windows.Forms.TableLayoutPanel();
+            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.textBox3 = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
@@ -78,6 +80,12 @@
             this.label5 = new System.Windows.Forms.Label();
             this.BaseControllerTxt = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.textBox7 = new System.Windows.Forms.TextBox();
+            this.textBox8 = new System.Windows.Forms.TextBox();
+            this.textBox9 = new System.Windows.Forms.TextBox();
+            this.textBox10 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.GitHubLink)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LinkedInLink)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.TwitterLink)).BeginInit();
@@ -471,19 +479,49 @@
             this.OtherNuGetPackagesList.ColumnCount = 2;
             this.OtherNuGetPackagesList.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.OtherNuGetPackagesList.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.OtherNuGetPackagesList.Controls.Add(this.textBox10, 1, 6);
+            this.OtherNuGetPackagesList.Controls.Add(this.textBox9, 0, 6);
+            this.OtherNuGetPackagesList.Controls.Add(this.textBox8, 1, 5);
+            this.OtherNuGetPackagesList.Controls.Add(this.textBox7, 0, 5);
+            this.OtherNuGetPackagesList.Controls.Add(this.textBox6, 1, 4);
+            this.OtherNuGetPackagesList.Controls.Add(this.textBox5, 0, 4);
             this.OtherNuGetPackagesList.Controls.Add(this.label10, 1, 0);
             this.OtherNuGetPackagesList.Controls.Add(this.textBox1, 0, 1);
             this.OtherNuGetPackagesList.Controls.Add(this.label9, 0, 0);
             this.OtherNuGetPackagesList.Controls.Add(this.textBox2, 1, 1);
-            this.OtherNuGetPackagesList.Location = new System.Drawing.Point(344, 62);
+            this.OtherNuGetPackagesList.Controls.Add(this.textBox4, 0, 3);
+            this.OtherNuGetPackagesList.Controls.Add(this.textBox3, 1, 3);
+            this.OtherNuGetPackagesList.Location = new System.Drawing.Point(347, 99);
             this.OtherNuGetPackagesList.Name = "OtherNuGetPackagesList";
-            this.OtherNuGetPackagesList.RowCount = 2;
+            this.OtherNuGetPackagesList.RowCount = 7;
             this.OtherNuGetPackagesList.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.OtherNuGetPackagesList.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.OtherNuGetPackagesList.Size = new System.Drawing.Size(418, 232);
+            this.OtherNuGetPackagesList.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.OtherNuGetPackagesList.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.OtherNuGetPackagesList.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.OtherNuGetPackagesList.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.OtherNuGetPackagesList.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.OtherNuGetPackagesList.Size = new System.Drawing.Size(415, 156);
             this.OtherNuGetPackagesList.TabIndex = 0;
             this.OtherNuGetPackagesList.Visible = false;
             this.OtherNuGetPackagesList.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel3_Paint);
+            // 
+            // textBox4
+            // 
+            this.textBox4.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.textBox4.Location = new System.Drawing.Point(3, 44);
+            this.textBox4.Name = "textBox4";
+            this.textBox4.Size = new System.Drawing.Size(300, 22);
+            this.textBox4.TabIndex = 10;
+            // 
+            // textBox3
+            // 
+            this.textBox3.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.textBox3.Location = new System.Drawing.Point(322, 44);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(77, 22);
+            this.textBox3.TabIndex = 9;
+            this.textBox3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label10
             // 
@@ -500,14 +538,14 @@
             this.textBox1.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.textBox1.Location = new System.Drawing.Point(3, 16);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(298, 22);
+            this.textBox1.Size = new System.Drawing.Size(300, 22);
             this.textBox1.TabIndex = 0;
             // 
             // label9
             // 
             this.label9.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(112, 0);
+            this.label9.Location = new System.Drawing.Point(113, 0);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(80, 13);
             this.label9.TabIndex = 2;
@@ -516,10 +554,11 @@
             // textBox2
             // 
             this.textBox2.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.textBox2.Location = new System.Drawing.Point(311, 16);
+            this.textBox2.Location = new System.Drawing.Point(322, 16);
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 22);
+            this.textBox2.Size = new System.Drawing.Size(77, 22);
             this.textBox2.TabIndex = 1;
+            this.textBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // AutoInstallPanel
             // 
@@ -682,6 +721,57 @@
             this.label4.TabIndex = 0;
             this.label4.Text = "Settings";
             // 
+            // textBox5
+            // 
+            this.textBox5.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.textBox5.Location = new System.Drawing.Point(3, 72);
+            this.textBox5.Name = "textBox5";
+            this.textBox5.Size = new System.Drawing.Size(300, 22);
+            this.textBox5.TabIndex = 35;
+            // 
+            // textBox6
+            // 
+            this.textBox6.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.textBox6.Location = new System.Drawing.Point(322, 72);
+            this.textBox6.Name = "textBox6";
+            this.textBox6.Size = new System.Drawing.Size(77, 22);
+            this.textBox6.TabIndex = 10;
+            this.textBox6.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // textBox7
+            // 
+            this.textBox7.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.textBox7.Location = new System.Drawing.Point(3, 100);
+            this.textBox7.Name = "textBox7";
+            this.textBox7.Size = new System.Drawing.Size(300, 22);
+            this.textBox7.TabIndex = 36;
+            // 
+            // textBox8
+            // 
+            this.textBox8.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.textBox8.Location = new System.Drawing.Point(322, 100);
+            this.textBox8.Name = "textBox8";
+            this.textBox8.Size = new System.Drawing.Size(77, 22);
+            this.textBox8.TabIndex = 35;
+            this.textBox8.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // textBox9
+            // 
+            this.textBox9.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.textBox9.Location = new System.Drawing.Point(3, 128);
+            this.textBox9.Name = "textBox9";
+            this.textBox9.Size = new System.Drawing.Size(300, 22);
+            this.textBox9.TabIndex = 37;
+            // 
+            // textBox10
+            // 
+            this.textBox10.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.textBox10.Location = new System.Drawing.Point(322, 128);
+            this.textBox10.Name = "textBox10";
+            this.textBox10.Size = new System.Drawing.Size(77, 22);
+            this.textBox10.TabIndex = 36;
+            this.textBox10.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // MainDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -780,8 +870,16 @@
         private System.Windows.Forms.TextBox CORSVersionTxt;
         private System.Windows.Forms.TableLayoutPanel OtherNuGetPackagesList;
         private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.TextBox textBox8;
+        private System.Windows.Forms.TextBox textBox7;
+        private System.Windows.Forms.TextBox textBox10;
+        private System.Windows.Forms.TextBox textBox9;
     }
 }
