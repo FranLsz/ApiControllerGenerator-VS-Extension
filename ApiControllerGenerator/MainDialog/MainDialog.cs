@@ -1392,12 +1392,17 @@ namespace ApiControllerGenerator.MainDialog
 
         private void NuGet_CheckedChanged(object sender, EventArgs e)
         {
-
+            AutoInstallPanel.Visible = ((CheckBox)sender).Checked;
+            if (!((CheckBox)sender).Checked)
+            {
+                NuGetOther.Checked = false;
+                OtherNuGetPackagesList.Visible = false;
+            }
         }
 
         private void NuGetOther_CheckedChanged(object sender, EventArgs e)
         {
-
+            OtherNuGetPackagesList.Visible = ((CheckBox)sender).Checked;
         }
 
         private void tableLayoutPanel3_Paint(object sender, PaintEventArgs e)

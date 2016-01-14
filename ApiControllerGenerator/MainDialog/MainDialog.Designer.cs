@@ -58,11 +58,12 @@
             this.LogBox = new System.Windows.Forms.RichTextBox();
             this.ProcessPanel = new System.Windows.Forms.Panel();
             this.SettingsPanel = new System.Windows.Forms.Panel();
-            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.OtherNuGetPackagesList = new System.Windows.Forms.TableLayoutPanel();
+            this.label10 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.AutoInstallPanel = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.label6 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
@@ -77,7 +78,6 @@
             this.label5 = new System.Windows.Forms.Label();
             this.BaseControllerTxt = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.GitHubLink)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LinkedInLink)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.TwitterLink)).BeginInit();
@@ -87,8 +87,8 @@
             this.GeneratePanel.SuspendLayout();
             this.ProcessPanel.SuspendLayout();
             this.SettingsPanel.SuspendLayout();
-            this.tableLayoutPanel3.SuspendLayout();
-            this.panel1.SuspendLayout();
+            this.OtherNuGetPackagesList.SuspendLayout();
+            this.AutoInstallPanel.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -453,8 +453,8 @@
             // 
             // SettingsPanel
             // 
-            this.SettingsPanel.Controls.Add(this.tableLayoutPanel3);
-            this.SettingsPanel.Controls.Add(this.panel1);
+            this.SettingsPanel.Controls.Add(this.OtherNuGetPackagesList);
+            this.SettingsPanel.Controls.Add(this.AutoInstallPanel);
             this.SettingsPanel.Controls.Add(this.NuGet);
             this.SettingsPanel.Controls.Add(this.Bootstrapper);
             this.SettingsPanel.Controls.Add(this.tableLayoutPanel1);
@@ -465,24 +465,35 @@
             this.SettingsPanel.TabIndex = 34;
             this.SettingsPanel.Visible = false;
             // 
-            // tableLayoutPanel3
+            // OtherNuGetPackagesList
             // 
-            this.tableLayoutPanel3.AutoScroll = true;
-            this.tableLayoutPanel3.ColumnCount = 2;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel3.Controls.Add(this.label10, 1, 0);
-            this.tableLayoutPanel3.Controls.Add(this.textBox1, 0, 1);
-            this.tableLayoutPanel3.Controls.Add(this.label9, 0, 0);
-            this.tableLayoutPanel3.Controls.Add(this.textBox2, 1, 1);
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(344, 62);
-            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 2;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(418, 64);
-            this.tableLayoutPanel3.TabIndex = 0;
-            this.tableLayoutPanel3.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel3_Paint);
+            this.OtherNuGetPackagesList.AutoScroll = true;
+            this.OtherNuGetPackagesList.ColumnCount = 2;
+            this.OtherNuGetPackagesList.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.OtherNuGetPackagesList.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.OtherNuGetPackagesList.Controls.Add(this.label10, 1, 0);
+            this.OtherNuGetPackagesList.Controls.Add(this.textBox1, 0, 1);
+            this.OtherNuGetPackagesList.Controls.Add(this.label9, 0, 0);
+            this.OtherNuGetPackagesList.Controls.Add(this.textBox2, 1, 1);
+            this.OtherNuGetPackagesList.Location = new System.Drawing.Point(344, 62);
+            this.OtherNuGetPackagesList.Name = "OtherNuGetPackagesList";
+            this.OtherNuGetPackagesList.RowCount = 2;
+            this.OtherNuGetPackagesList.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.OtherNuGetPackagesList.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.OtherNuGetPackagesList.Size = new System.Drawing.Size(418, 232);
+            this.OtherNuGetPackagesList.TabIndex = 0;
+            this.OtherNuGetPackagesList.Visible = false;
+            this.OtherNuGetPackagesList.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel3_Paint);
+            // 
+            // label10
+            // 
+            this.label10.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(316, 0);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(89, 13);
+            this.label10.TabIndex = 8;
+            this.label10.Text = "Package version";
             // 
             // textBox1
             // 
@@ -491,14 +502,6 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(298, 22);
             this.textBox1.TabIndex = 0;
-            // 
-            // textBox2
-            // 
-            this.textBox2.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.textBox2.Location = new System.Drawing.Point(311, 16);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 22);
-            this.textBox2.TabIndex = 1;
             // 
             // label9
             // 
@@ -510,14 +513,22 @@
             this.label9.TabIndex = 2;
             this.label9.Text = "Package name";
             // 
-            // panel1
+            // textBox2
             // 
-            this.panel1.Controls.Add(this.tableLayoutPanel2);
-            this.panel1.Controls.Add(this.NuGetOther);
-            this.panel1.Location = new System.Drawing.Point(21, 169);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(317, 125);
-            this.panel1.TabIndex = 7;
+            this.textBox2.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.textBox2.Location = new System.Drawing.Point(311, 16);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(100, 22);
+            this.textBox2.TabIndex = 1;
+            // 
+            // AutoInstallPanel
+            // 
+            this.AutoInstallPanel.Controls.Add(this.tableLayoutPanel2);
+            this.AutoInstallPanel.Controls.Add(this.NuGetOther);
+            this.AutoInstallPanel.Location = new System.Drawing.Point(21, 169);
+            this.AutoInstallPanel.Name = "AutoInstallPanel";
+            this.AutoInstallPanel.Size = new System.Drawing.Size(317, 125);
+            this.AutoInstallPanel.TabIndex = 7;
             // 
             // tableLayoutPanel2
             // 
@@ -671,16 +682,6 @@
             this.label4.TabIndex = 0;
             this.label4.Text = "Settings";
             // 
-            // label10
-            // 
-            this.label10.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(316, 0);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(89, 13);
-            this.label10.TabIndex = 8;
-            this.label10.Text = "Package version";
-            // 
             // MainDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -719,10 +720,10 @@
             this.ProcessPanel.ResumeLayout(false);
             this.SettingsPanel.ResumeLayout(false);
             this.SettingsPanel.PerformLayout();
-            this.tableLayoutPanel3.ResumeLayout(false);
-            this.tableLayoutPanel3.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.OtherNuGetPackagesList.ResumeLayout(false);
+            this.OtherNuGetPackagesList.PerformLayout();
+            this.AutoInstallPanel.ResumeLayout(false);
+            this.AutoInstallPanel.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -769,7 +770,7 @@
         private System.Windows.Forms.TextBox BaseControllerTxt;
         private System.Windows.Forms.CheckBox NuGetOther;
         private System.Windows.Forms.CheckBox NuGet;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel AutoInstallPanel;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
@@ -777,7 +778,7 @@
         private System.Windows.Forms.TextBox EntityFrameworkVersionTxt;
         private System.Windows.Forms.TextBox UnityVersionTxt;
         private System.Windows.Forms.TextBox CORSVersionTxt;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.TableLayoutPanel OtherNuGetPackagesList;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Label label9;
