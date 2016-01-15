@@ -706,7 +706,7 @@ namespace ApiControllerGenerator.MainDialog
 
         private void TwitterLink_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("https://twitter.com/franlsz95");
+            System.Diagnostics.Process.Start("https://twitter.com/fran_lsz");
         }
 
         private void LinkedInLink_Click(object sender, EventArgs e)
