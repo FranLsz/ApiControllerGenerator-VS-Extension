@@ -103,6 +103,24 @@ namespace " + ApiProjectName + @".Controllers
             return Ok(data);
         }
 
+        //GET BY PAGE
+        [ResponseType(typeof(Dictionary<string, object>))]
+        [HttpGet]
+        public IHttpActionResult GetPaginated([FromUri]int page, [FromUri]int pageSize)
+        {
+            var total = " + className + @"Repository.Count();
+            
+            var skip = (page - 1) * pageSize;
+            var data = " + className + @"Repository.Get(o => true, skip, pageSize, o => o." + primaryKeys[0].Item1 + @");
+
+            if (data.Count == 0)
+                return NotFound();
+
+            var res = new Dictionary<string, object> { { ""totalItems"", total }, { ""items"", data } };
+
+            return Ok(res);
+        }
+
         //POST
         [ResponseType(typeof(" + className + @"ViewModel))]
         public IHttpActionResult Post([FromBody] " + className + @"ViewModel model)
