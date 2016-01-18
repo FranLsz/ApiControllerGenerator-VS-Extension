@@ -111,7 +111,7 @@ namespace " + ApiProjectName + @".Controllers
             var total = " + className + @"Repository.Count();
             
             var skip = (page - 1) * pageSize;
-            var data = " + className + @"Repository.Get(o => true, skip, pageSize, o => o." + primaryKeys[0].Item1 + @");
+            var data = " + className + @"Repository.Get(o => true, o => o." + primaryKeys[0].Item1 + @", true, skip, pageSize);
 
             if (data.Count == 0)
                 return NotFound();
