@@ -700,7 +700,7 @@ namespace ApiControllerGenerator.MainDialog
                    }
                }
 
-               Send(p, 100, "---ACG process ended---");
+               Send(p, 100, " ---ACG process ended---");
            });
         }
 
